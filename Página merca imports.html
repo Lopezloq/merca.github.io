@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merca Imports - Taller &amp; Performance Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts ('Outfit') -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        cyber: {
+                            bg: '#080d1a',
+                            card: '#0f172a',
+                            border: '#1e293b',
+                            blue: '#00d2ff',
+                            electric: '#0066ff',
+                            glow: '#00d2ff22'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #080d1a;
+            color: #f1f5f9;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 210, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(0, 102, 255, 0.08) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 210, 255, 0.18);
+        }
+        .glass-panel-hover {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-panel-hover:hover {
+            border-color: rgba(0, 210, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .card-selected {
+            border-color: #00d2ff !important;
+            background: rgba(0, 210, 255, 0.12) !important;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.25) !important;
+        }
+        .text-glow {
+            text-shadow: 0 0 12px rgba(0, 210, 255, 0.6);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080d1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00d2ff;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans pb-28">
+
+    <!-- Header / Navbar -->
+    <header class="glass-panel sticky top-0 z-40 border-b border-cyan-500/20 bg-slate-950/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('calculator')">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+                    <i class="fa-solid fa-car-on text-slate-950 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-wider bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent uppercase text-glow">
+                        MERCA <span class="text-white">IMPORTS</span>
+                    </h1>
+                    <p class="text-xs text-cyan-400/70 font-medium tracking-widest uppercase">Taller &amp; Performance Hub</p>
+                </div>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <nav class="hidden md:flex space-x-1 glass-panel p-1.5 rounded-xl border-cyan-500/20 overflow-x-auto">
+                <button id="nav-calculator" onclick="switchTab('calculator')" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center gap-2 bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-lg shadow-cyan-500/10 whitespace-nowrap">
+                    <i class="fa-solid fa-calculator"></i> Calculadora
+                </button>
+                <button id="nav-inventory" onclick="switchTab('inventory')" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-cyan-300 hover:bg-slate-800/50 whitespace-nowrap">
+                    <i class="fa-solid fa-car"></i> Catálogo
+                </button>
+                <button id="nav-stock" onclick="switchTab('stock')" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-cyan-300 hover:bg-slate-800/50 whitespace-nowrap">
+                    <i class="fa-solid fa-boxes-stacked"></i> Stock
+                </button>
+                <button id="nav-purchases" onclick="switchTab('purchases')" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-cyan-300 hover:bg-slate-800/50 whitespace-nowrap">
+                    <i class="fa-solid fa-cart-shopping"></i> Compras
+                </button>
+                <button id="nav-sales" onclick="switchTab('sales')" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-cyan-300 hover:bg-slate-800/50 whitespace-nowrap">
+                    <i class="fa-solid fa-receipt"></i> Ventas
+                </button>
+                <button id="nav-transfers" onclick="switchTab('transfers')" class="tab-btn px-4 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center gap-2 text-slate-400 hover:text-cyan-300 hover:bg-slate-800/50 whitespace-nowrap">
+                    <i class="fa-solid fa-right-left"></i> Traspasos
+                </button>
+            </nav>
+
+            <!-- Status Indicator -->
+            <div class="hidden lg:flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full bg-cyan-950/50 border border-cyan-500/30 text-cyan-300">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                SISTEMA EN LÍNEA
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+        <!-- TAB 1: CALCULADORA -->
+        <section id="tab-calculator" class="tab-content space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Vehicle Selector -->
+                <div class="lg:col-span-2 glass-panel p-6 rounded-2xl relative overflow-hidden">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-cyan-400 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-car-side"></i> Seleccionar Vehículo de Venta
+                    </label>
+                    
+                    <div class="mb-4">
+                        <input type="text" id="calc-vehicle-select" list="vehicle-options" onchange="onVehicleSelectChange()" placeholder="Buscar y seleccionar vehículo..." autocomplete="off" class="w-full bg-slate-900/90 border border-cyan-500/30 rounded-xl px-4 py-3.5 text-white font-medium focus:outline-none focus:border-cyan-400 text-sm">
+                        <datalist id="vehicle-options"></datalist>
+                    </div>
+
+                    <!-- Selected Vehicle Card Info -->
+                    <div id="selected-vehicle-display" class="grid grid-cols-2 sm:grid-cols-6 gap-3 p-4 rounded-xl bg-slate-900/60 border border-cyan-500/20">
+                        <div>
+                            <span class="text-xs text-slate-400 block">Marca</span>
+                            <span id="display-marca" class="font-bold text-white text-sm">-</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block">Modelo</span>
+                            <span id="display-modelo" class="font-bold text-cyan-400 text-sm">-</span>
+                        </div>
+                        <div>
+                            <label for="calculator-license-plate" class="text-xs text-slate-400 block">Matrícula</label>
+                            <input type="text" id="calculator-license-plate" placeholder="ABC123" class="w-full mt-1 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1.5 text-white text-sm uppercase focus:outline-none focus:border-cyan-400">
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block">Precio Máx. Compra</span>
+                            <span id="display-max-compra" class="font-bold text-amber-400 text-sm">$0</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block">Precio Nuevo Base</span>
+                            <span id="display-precio-nuevo" class="font-bold text-emerald-400 text-sm">$0</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block">Coste Transferencia</span>
+                            <span id="display-venta-transf" class="font-bold text-cyan-300 text-sm">$0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client & Staff Metadata -->
+                <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-cyan-400 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-user-gear"></i> Datos del Registro
+                        </h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="text-xs text-slate-400 block mb-1">Nombre del Cliente</label>
+                                <input type="text" id="client-name" placeholder="Ej: Pepito Pepin" class="w-full bg-slate-900/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-400 block mb-1">Mecánico / Encargado</label>
+                                <input type="text" id="mechanic-name" placeholder="Nombre del mecánico" class="w-full bg-slate-900/90 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Tuning Banner Switch -->
+            <div class="glass-panel p-6 rounded-2xl border-cyan-500/40 relative overflow-hidden bg-gradient-to-r from-blue-950/40 via-slate-900/80 to-cyan-950/40">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 text-2xl shadow-lg shadow-cyan-500/20">
+                            <i class="fa-solid fa-gauge-high"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-xl font-extrabold text-white tracking-wide">PAQUETE FULL TUNING</h2>
+                                <span class="bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 text-xs font-black px-2.5 py-1 rounded-full uppercase tracking-wider">
+                                    +$55.000
+                                </span>
+                            </div>
+                            <p class="text-slate-400 text-sm mt-0.5">Modificación completa de rendimiento (compatible con cosméticos adicionales).</p>
+                        </div>
+                    </div>
+
+                    <label class="relative inline-flex items-center cursor-pointer select-none">
+                        <input type="checkbox" id="toggle-full-tuning" onchange="toggleFullTuning(this.checked)" class="sr-only peer">
+                        <div class="w-16 h-9 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-blue-600 peer-checked:to-cyan-400 shadow-inner"></div>
+                        <span id="full-tuning-label" class="ml-3 text-sm font-bold uppercase tracking-wider text-slate-400 peer-checked:text-cyan-300">DESACTIVADO</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Modifications Section -->
+            <div id="individual-mods-container" class="space-y-6 transition-all duration-300">
+                <!-- Category 1: Main Performance Components -->
+                <div id="main-mods-section" class="transition-all duration-300">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-cyan-400 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-microchip"></i> Componentes Principales de Rendimiento
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div id="card-motorV8" onclick="toggleMainMod('motorV8', 25000)" class="glass-panel glass-panel-hover p-5 rounded-2xl cursor-pointer border-slate-800 flex flex-col justify-between h-36 relative">
+                            <div class="flex justify-between items-start">
+                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                                    <i class="fa-solid fa-gears text-lg"></i>
+                                </div>
+                                <span class="text-xs font-extrabold text-cyan-400 bg-cyan-950/60 px-2.5 py-1 rounded-full border border-cyan-500/30">+$25.000</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-base">Motor V8 Performance</h4>
+                                <p class="text-xs text-slate-400">Potencia bruta y aceleración</p>
+                            </div>
+                        </div>
+
+                        <div id="card-turbo" onclick="toggleMainMod('turbo', 12500)" class="glass-panel glass-panel-hover p-5 rounded-2xl cursor-pointer border-slate-800 flex flex-col justify-between h-36 relative">
+                            <div class="flex justify-between items-start">
+                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                                    <i class="fa-solid fa-wind text-lg"></i>
+                                </div>
+                                <span class="text-xs font-extrabold text-cyan-400 bg-cyan-950/60 px-2.5 py-1 rounded-full border border-cyan-500/30">+$12.500</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-base">Kit Turbo Intercooler</h4>
+                                <p class="text-xs text-slate-400">Sobrealimentación turbo</p>
+                            </div>
+                        </div>
+
+                        <div id="card-frenos" onclick="toggleMainMod('frenos', 12500)" class="glass-panel glass-panel-hover p-5 rounded-2xl cursor-pointer border-slate-800 flex flex-col justify-between h-36 relative">
+                            <div class="flex justify-between items-start">
+                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                                    <i class="fa-solid fa-compact-disc text-lg"></i>
+                                </div>
+                                <span class="text-xs font-extrabold text-cyan-400 bg-cyan-950/60 px-2.5 py-1 rounded-full border border-cyan-500/30">+$12.500</span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-base">Frenos de Competición</h4>
+                                <p class="text-xs text-slate-400">Discos de alto rendimiento</p>
+                            </div>
+                        </div>
+
+                        <div id="card-ruedas" class="glass-panel glass-panel-hover p-5 rounded-2xl border-slate-800 flex flex-col justify-between h-36 relative">
+                            <div class="flex justify-between items-start">
+                                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                                    <i class="fa-solid fa-circle-dot text-lg"></i>
+                                </div>
+                                <span class="text-xs font-extrabold text-cyan-400 bg-cyan-950/60 px-2.5 py-1 rounded-full border border-cyan-500/30">+$3.500</span>
+                            </div>
+                            <div>
+                                <label for="wheel-type" class="font-bold text-white text-base block">Ruedas</label>
+                                <select id="wheel-type" onchange="updateWheelSelection()" class="w-full mt-1 bg-slate-950 border border-cyan-500/30 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-cyan-400">
+                                    <option value="0">Sin ruedas</option>
+                                    <option value="3500:slicks">Slicks (+$3.500)</option>
+                                    <option value="3500:semi-slicks">Semi-slicks (+$3.500)</option>
+                                    <option value="3500:off-road">Off-road (+$3.500)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="card-traction" class="glass-panel p-5 rounded-2xl border-cyan-500/30 flex flex-col justify-between h-36 relative">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                                <i class="fa-solid fa-road text-lg"></i>
+                            </div>
+                            <div>
+                                <label for="traction-type" class="font-bold text-white text-base block">Tracción Full Tuning</label>
+                                <select id="traction-type" onchange="updateTractionSelection(); calculateTotal()" class="w-full mt-1 bg-slate-950 border border-cyan-500/30 rounded-lg px-2 py-1 text-xs text-white focus:outline-none focus:border-cyan-400">
+                                    <option value="0">Sin tracción</option>
+                                    <option value="6500">AWD / 4x4 (+$6.500)</option>
+                                    <option value="6000">RWD / Trasera (+$6.000)</option>
+                                    <option value="5500">FWD / Delantera (+$5.500)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 2: Cosmetic Modifications -->
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                            <i class="fa-solid fa-palette"></i> Componentes Cosméticos
+                        </h3>
+                        <span class="text-xs text-cyan-400/80 bg-cyan-950/80 border border-cyan-500/30 px-3 py-1 rounded-full">
+                            Tarifa Plana: <strong class="text-white">$5.000</strong> c/u
+                        </span>
+                    </div>
+
+                    <!-- Número de Piezas Cosméticas -->
+                    <div class="glass-panel p-5 rounded-2xl border-cyan-500/30 bg-slate-900/80 flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                                <i class="fa-solid fa-list-ol text-lg"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-base">Número de Piezas Cosméticas</h4>
+                                <p class="text-xs text-slate-400">Cada pieza suma $5.000 al total de la personalización.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                            <input type="number" id="cosmetic-count" min="0" value="0" oninput="updateCosmeticCount()" class="w-24 bg-slate-950 border border-cyan-500/40 rounded-xl px-3 py-2 text-center text-white font-extrabold text-lg focus:outline-none focus:border-cyan-400">
+                            <span id="cosmetic-total-price" class="text-emerald-400 font-extrabold text-base min-w-[90px] text-right">$0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 3: Rendimientos -->
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                            <i class="fa-solid fa-gauge-high"></i> Rendimientos
+                        </h3>
+                        <span class="text-xs text-cyan-400/80 bg-cyan-950/80 border border-cyan-500/30 px-3 py-1 rounded-full">
+                            $5.000 por unidad
+                        </span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="glass-panel p-4 rounded-2xl border-cyan-500/20">
+                            <label class="text-sm font-bold text-white block mb-2">Motor</label>
+                            <select id="performance-motor" onchange="updatePerformanceTotal()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                                <option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option>
+                            </select>
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl border-cyan-500/20">
+                            <label class="text-sm font-bold text-white block mb-2">Frenos cerámicos</label>
+                            <select id="performance-brakes" onchange="updatePerformanceTotal()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                                <option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option>
+                            </select>
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl border-cyan-500/20">
+                            <label class="text-sm font-bold text-white block mb-2">Turbo</label>
+                            <select id="performance-turbo" onchange="updatePerformanceTotal()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                                <option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option>
+                            </select>
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl border-cyan-500/20">
+                            <label class="text-sm font-bold text-white block mb-2">Transmisión</label>
+                            <select id="performance-transmission" onchange="updatePerformanceTotal()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                                <option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option>
+                            </select>
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl border-cyan-500/20">
+                            <label class="text-sm font-bold text-white block mb-2">Suspensión</label>
+                            <select id="performance-suspension" onchange="updatePerformanceTotal()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                                <option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option>
+                            </select>
+                        </div>
+                        <div class="glass-panel p-4 rounded-2xl border-cyan-500/20">
+                            <label class="text-sm font-bold text-white block mb-2">Blindaje</label>
+                            <select id="performance-armor" onchange="updatePerformanceTotal()" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                                <option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-right mt-3">
+                        <span class="text-sm text-slate-400">Total rendimientos: </span>
+                        <strong id="performance-total-price" class="text-emerald-400">$0</strong>
+                    </div>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl border-cyan-500/30">
+                    <label for="mechanic-observations" class="text-sm font-bold text-cyan-400 block mb-2">Observaciones del mecánico</label>
+                    <textarea id="mechanic-observations" rows="3" placeholder="Escribe aquí cualquier detalle adicional..." class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: CATÁLOGO DE VEHÍCULOS -->
+        <section id="tab-inventory" class="tab-content space-y-6 hidden">
+            <div class="glass-panel p-6 rounded-2xl flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-car text-cyan-400"></i> Catálogo General Merca Imports
+                    </h2>
+                    <p class="text-xs text-slate-400 flex items-center gap-2 mt-1">
+                        <span>Modelos y precios extraídos de la base de datos oficial.</span>
+                        <span class="text-cyan-400 font-semibold bg-cyan-950/60 border border-cyan-500/30 px-2 py-0.5 rounded-md text-[11px]">
+                            Total en catálogo: <strong id="catalog-total-count" class="text-white font-bold">0</strong> vehículos
+                        </span>
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                    <input type="text" id="inventory-search" oninput="renderInventoryTable()" placeholder="Buscar por marca o modelo..." class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 w-full md:w-64">
+                    <button onclick="openAddVehicleModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all flex items-center justify-center gap-2 whitespace-nowrap">
+                        <i class="fa-solid fa-plus"></i> Añadir Vehículo
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl overflow-hidden border-cyan-500/20">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-slate-950/80 uppercase text-xs font-bold text-cyan-400 border-b border-cyan-500/20">
+                            <tr>
+                                <th class="px-6 py-4">Marca</th>
+                                <th class="px-6 py-4">Modelo</th>
+                                <th class="px-6 py-4 text-right">Precio Nuevo</th>
+                                <th class="px-6 py-4 text-right">Máx. Compra</th>
+                                <th class="px-6 py-4 text-right">Compra Transf.</th>
+                                <th class="px-6 py-4 text-right">Venta Transf.</th>
+                                <th class="px-6 py-4 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-table-body" class="divide-y divide-slate-800/60"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: STOCK -->
+        <section id="tab-stock" class="tab-content space-y-6 hidden">
+            <div class="glass-panel p-6 rounded-2xl flex flex-col md:flex-row gap-4 items-center justify-between">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-boxes-stacked text-cyan-400"></i> Stock
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Añade vehículos existentes del catálogo para controlar las unidades disponibles.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                    <select id="stock-vehicle-select" class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 w-full md:w-72"></select>
+                    <button onclick="addVehicleToStock()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-2 whitespace-nowrap">
+                        <i class="fa-solid fa-plus"></i> Añadir al Stock
+                    </button>
+                </div>
+            </div>
+            <div class="glass-panel rounded-2xl overflow-hidden border-cyan-500/20">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-slate-950/80 uppercase text-xs font-bold text-cyan-400 border-b border-cyan-500/20">
+                            <tr><th class="px-6 py-4">Marca</th><th class="px-6 py-4">Modelo</th><th class="px-6 py-4">Matrícula</th><th class="px-6 py-4 text-right">Unidades</th><th class="px-6 py-4">Detalles</th><th class="px-6 py-4 text-right">PRECIO VENTA</th><th class="px-6 py-4 text-center">Acciones</th></tr>
+                        </thead>
+                        <tbody id="stock-table-body" class="divide-y divide-slate-800/60"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <div id="stock-details-modal" class="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden">
+            <div class="glass-panel p-6 sm:p-7 rounded-3xl max-w-3xl w-full border-cyan-400/30 shadow-2xl shadow-cyan-950/50 relative max-h-[90vh] overflow-y-auto">
+                <div class="flex justify-between items-start border-b border-cyan-500/20 pb-5 mb-5">
+                    <div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-2xl bg-cyan-400/15 border border-cyan-300/30 flex items-center justify-center text-cyan-300"><i class="fa-solid fa-car-side text-lg"></i></div>
+                            <div>
+                                <h3 class="text-xl font-extrabold text-white">Detalles del vehículo</h3>
+                                <p class="text-xs text-slate-400 mt-0.5">Configura el equipamiento y deja anotaciones para el equipo.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="closeStockDetailsModal()" class="w-9 h-9 rounded-xl bg-slate-900/70 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                <input type="hidden" id="stock-details-index">
+                <div class="rounded-2xl border border-cyan-500/20 bg-slate-950/35 p-4 mb-4">
+                    <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-sliders text-cyan-400"></i><h4 class="text-sm font-bold uppercase tracking-wider text-cyan-300">Configuración principal</h4></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label class="flex items-center justify-between rounded-xl bg-slate-900/70 border border-slate-700 px-4 py-3 text-sm text-white">Full Tuning <input type="checkbox" id="stock-detail-full-tuning" onchange="toggleStockTraction(this.checked)" class="h-5 w-5 accent-cyan-400"></label>
+                        <label class="text-xs text-slate-400">Tracción<select id="stock-detail-traction" class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400"><option value="0">Sin tracción</option><option value="6500">AWD / 4x4 (+$6.500)</option><option value="6000">RWD / Trasera (+$6.000)</option><option value="5500">FWD / Delantera (+$5.500)</option></select></label>
+                    </div>
+                </div>
+                <div class="rounded-2xl border border-blue-500/20 bg-slate-950/25 p-4 mb-4">
+                    <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-gears text-blue-400"></i><h4 class="text-sm font-bold uppercase tracking-wider text-blue-300">Componentes</h4></div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm text-white">
+                        <label class="flex items-center gap-2 rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-3"><input type="checkbox" id="stock-detail-motorV8" class="h-4 w-4 accent-cyan-400"> Motor V8</label>
+                        <label class="flex items-center gap-2 rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-3"><input type="checkbox" id="stock-detail-turboKit" class="h-4 w-4 accent-cyan-400"> Turbo</label>
+                        <label class="flex items-center gap-2 rounded-xl bg-slate-900/70 border border-slate-700 px-3 py-3"><input type="checkbox" id="stock-detail-brakesKit" class="h-4 w-4 accent-cyan-400"> Frenos</label>
+                        <label class="text-xs text-slate-400">Ruedas<select id="stock-detail-wheels" class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl px-2 py-2 text-white focus:outline-none focus:border-cyan-400"><option value="0">Sin ruedas</option><option value="3500:slicks">Slicks (+$3.500)</option><option value="3500:semi-slicks">Semi-slicks (+$3.500)</option><option value="3500:off-road">Off-road (+$3.500)</select></label>
+                    </div>
+                </div>
+                <div class="rounded-2xl border border-emerald-500/20 bg-slate-950/25 p-4 mb-4">
+                    <div class="flex items-center gap-2 mb-3"><i class="fa-solid fa-gauge-high text-emerald-400"></i><h4 class="text-sm font-bold uppercase tracking-wider text-emerald-300">Rendimientos</h4></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <label class="text-xs text-slate-400">Motor<select id="stock-detail-motor" class="stock-performance-select w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400"><option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option></select></label>
+                        <label class="text-xs text-slate-400">Frenos cerámicos<select id="stock-detail-brakes" class="stock-performance-select w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400"><option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option></select></label>
+                        <label class="text-xs text-slate-400">Turbo<select id="stock-detail-turbo" class="stock-performance-select w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400"><option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option></select></label>
+                        <label class="text-xs text-slate-400">Transmisión<select id="stock-detail-transmission" class="stock-performance-select w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400"><option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option></select></label>
+                        <label class="text-xs text-slate-400">Suspensión<select id="stock-detail-suspension" class="stock-performance-select w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400"><option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option></select></label>
+                        <label class="text-xs text-slate-400">Blindaje<select id="stock-detail-armor" class="stock-performance-select w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-emerald-400"><option value="0">No instalado</option><option value="1">Nivel 1</option><option value="2">Nivel 2</option><option value="3">Nivel 3</option><option value="4">Nivel 4</option></select></label>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                    <label class="text-xs text-slate-400">Piezas cosméticas<input type="number" id="stock-detail-cosmetics" min="0" value="0" class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400"></label>
+                    <label class="text-xs text-slate-400">Observaciones<textarea id="stock-detail-observations" rows="2" class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="Observaciones del vehículo..."></textarea></label>
+                </div>
+                <div class="flex justify-end gap-3 border-t border-cyan-500/20 pt-5"><button onclick="closeStockDetailsModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 text-sm font-bold hover:bg-slate-700">Cancelar</button><button onclick="saveStockDetails()" class="px-5 py-2.5 rounded-xl bg-cyan-400 text-slate-950 font-extrabold text-sm shadow-lg shadow-cyan-500/20 hover:bg-cyan-300"><i class="fa-solid fa-check mr-1"></i>Guardar detalles</button></div>
+            </div>
+        </div>
+
+        <div id="app-dialog" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden">
+            <div class="w-full max-w-md rounded-2xl border border-cyan-300/50 bg-gradient-to-br from-blue-950 to-cyan-950 p-6 shadow-2xl shadow-cyan-500/30">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-400/20 border border-cyan-300/40 flex items-center justify-center text-cyan-300"><i class="fa-solid fa-circle-info"></i></div>
+                    <h3 id="app-dialog-title" class="text-lg font-bold text-white">Confirmar</h3>
+                </div>
+                <p id="app-dialog-message" class="text-sm text-slate-200 whitespace-pre-line"></p>
+                <input id="app-dialog-input" type="text" class="hidden w-full mt-4 bg-slate-950 border border-cyan-400/40 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-300">
+                <div class="flex justify-end gap-3 mt-6">
+                    <button id="app-dialog-cancel" class="px-4 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-sm">Cancelar</button>
+                    <button id="app-dialog-accept" class="px-5 py-2.5 rounded-xl bg-cyan-400 text-slate-950 font-extrabold text-sm">Aceptar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: HISTORIAL DE COMPRAS -->
+        <section id="tab-purchases" class="tab-content space-y-6 hidden">
+            <div class="glass-panel p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-cart-shopping text-cyan-400"></i> Registro de Compras Realizadas
+                    </h2>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl overflow-hidden border-cyan-500/20">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-slate-950/80 uppercase text-xs font-bold text-cyan-400 border-b border-cyan-500/20">
+                            <tr>
+                                <th class="px-6 py-4">Fecha</th>
+                                <th class="px-6 py-4">Cliente</th>
+                                <th class="px-6 py-4">Vehículo</th>
+                                <th class="px-6 py-4">Matrícula</th>
+                                <th class="px-6 py-4">Detalle Modificaciones</th>
+                                <th class="px-6 py-4 text-right">TOTAL COMPRA</th>
+                                <th class="px-6 py-4">Mecánico</th>
+                                <th class="px-6 py-4 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="purchases-table-body" class="divide-y divide-slate-800/60"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="glass-panel border-t border-cyan-500/30 bg-slate-950/80 rounded-2xl px-6 py-4 flex items-center justify-between">
+                <span class="text-xs text-slate-400 uppercase tracking-wider">Dinero total invertido en compras</span>
+                <strong id="purchases-total-money" class="text-2xl font-black text-cyan-400 text-glow">$0</strong>
+            </div>
+        </section>
+
+        <!-- TAB 4: HISTORIAL DE VENTAS -->
+        <section id="tab-sales" class="tab-content space-y-6 hidden">
+            <div class="glass-panel p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-receipt text-cyan-400"></i> Registro de Ventas Realizadas
+                    </h2>
+                    <p class="text-xs text-slate-400 flex items-center gap-2 mt-1">
+                        <span class="text-slate-500">•</span>
+                        <span class="text-cyan-400 font-semibold bg-cyan-950/60 border border-cyan-500/30 px-2 py-0.5 rounded-md text-[11px]">
+                            Total vendidos: <strong id="sales-total-count" class="text-white font-bold">0</strong> vehículos
+                        </span>
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="openAddSaleModal()" class="px-4 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Añadir Venta Manual
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl overflow-hidden border-cyan-500/20">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-slate-950/80 uppercase text-xs font-bold text-cyan-400 border-b border-cyan-500/20">
+                            <tr>
+                                <th class="px-6 py-4">Fecha</th>
+                                <th class="px-6 py-4">Cliente</th>
+                                <th class="px-6 py-4">Vehículo</th>
+                                <th class="px-6 py-4">Matrícula</th>
+                                <th class="px-6 py-4">Observaciones</th>
+                                <th class="px-6 py-4 text-right">Precio de venta</th>
+                                <th class="px-6 py-4">Mecánico</th>
+                                <th class="px-6 py-4 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sales-table-body" class="divide-y divide-slate-800/60"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="glass-panel border-t border-cyan-500/30 bg-slate-950/80 rounded-2xl px-6 py-4 flex items-center justify-between">
+                <span class="text-xs text-slate-400 uppercase tracking-wider">Dinero total obtenido de ventas</span>
+                <strong id="sales-total-money" class="text-2xl font-black text-emerald-400 text-glow">$0</strong>
+            </div>
+        </section>
+
+        <!-- TAB 5: TRASPASOS -->
+        <section id="tab-transfers" class="tab-content space-y-6 hidden">
+            <div class="space-y-6">
+                <!-- Botón de apertura del formulario de Traspasos -->
+                <div class="flex justify-between items-center glass-panel p-6 rounded-2xl border-cyan-500/30">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-right-left text-cyan-400"></i> Gestión de Traspasos
+                        </h2>
+                    </div>
+                    <button onclick="toggleTransferForm()" id="btn-toggle-transfer-form" class="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-plus" id="transfer-form-icon"></i> <span id="transfer-form-btn-text">Nuevo Traspaso</span>
+                    </button>
+                </div>
+
+                <!-- Contenedor desplegable del Formulario de Traspasos -->
+                <div id="transfer-form-container" class="glass-panel p-6 rounded-2xl border-cyan-500/30 space-y-4 hidden transition-all duration-300">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                        <i class="fa-solid fa-right-left text-cyan-400"></i> Registrar Traspaso
+                    </h3>
+                    <form id="transfer-form" onsubmit="saveTransferRecord(event)" class="space-y-3.5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-slate-400 block mb-1">Nombre Comprador</label>
+                                <input type="text" id="transfer-buyer" required placeholder="Ej: Juan Pérez" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-400 block mb-1">Nombre Vendedor</label>
+                                <input type="text" id="transfer-seller" required placeholder="Ej: Carlos Gómez" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-slate-400 block mb-1">Vehículo</label>
+                                <input type="text" id="transfer-vehicle" list="transfer-vehicle-options" oninput="updateTransferPrice()" required placeholder="Buscar vehículo del catálogo..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                                <datalist id="transfer-vehicle-options"></datalist>
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-400 block mb-1">Precio de venta ($)</label>
+                                <input type="number" id="transfer-price" min="0" required placeholder="120000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400">
+                            </div>
+                        </div>
+                        <div class="pt-2 flex justify-end gap-3">
+                            <button type="button" onclick="toggleTransferForm()" class="px-5 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs hover:bg-slate-700 transition-all">Cancelar</button>
+                            <button type="submit" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-floppy-disk"></i> Guardar Traspaso
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Historial / Listado de Traspasos (Sin el botón de limpiar) -->
+                <div class="space-y-4">
+                    <div class="glass-panel p-6 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-file-invoice-dollar text-cyan-400"></i> Historial de Traspasos
+                            </h2>
+                            <p class="text-xs text-slate-400 flex items-center gap-2 mt-1">
+                                <span>Registro de propiedad vehicular guardado localmente.</span>
+                                <span class="text-slate-500">•</span>
+                                <span class="text-cyan-400 font-semibold bg-cyan-950/60 border border-cyan-500/30 px-2 py-0.5 rounded-md text-[11px]">
+                                    Total traspasos: <strong id="transfers-total-count" class="text-white font-bold">0</strong>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl overflow-hidden border-cyan-500/20">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm text-slate-300">
+                                <thead class="bg-slate-950/80 uppercase text-xs font-bold text-cyan-400 border-b border-cyan-500/20">
+                                    <tr>
+                                        <th class="px-6 py-4">Fecha</th>
+                                        <th class="px-6 py-4">Vendedor</th>
+                                        <th class="px-6 py-4">Vehículo</th>
+                                        <th class="px-6 py-4 text-right">Precio de venta</th>
+                                        <th class="px-6 py-4 text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transfers-table-body" class="divide-y divide-slate-800/60"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="glass-panel border-t border-cyan-500/30 bg-slate-950/80 rounded-2xl px-6 py-4 flex items-center justify-between">
+                        <span class="text-xs text-slate-400 uppercase tracking-wider">Precio total obtenido de traspasos</span>
+                        <strong id="transfers-total-money" class="text-2xl font-black text-amber-400 text-glow">$0</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal para Añadir Nuevo Vehículo -->
+    <div id="add-vehicle-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full border-cyan-500/30 space-y-4 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-car-side text-cyan-400"></i> Añadir Nuevo Vehículo
+                </h3>
+                <button onclick="closeAddVehicleModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="add-vehicle-form" onsubmit="saveNewVehicle(event)" class="space-y-3">
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Marca</label>
+                    <input type="text" id="new-vehicle-marca" required placeholder="Ej: BRAVADO" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Modelo</label>
+                    <input type="text" id="new-vehicle-modelo" required placeholder="Ej: BUFFALO STX" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Precio Nuevo ($)</label>
+                        <input type="number" id="new-vehicle-precio" min="0" required placeholder="300000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Máx. Compra ($)</label>
+                        <input type="number" id="new-vehicle-maxcompra" min="0" required placeholder="150000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Compra Transf. ($)</label>
+                        <input type="number" id="new-vehicle-compratransf" min="0" required placeholder="30000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Venta Transf. ($)</label>
+                        <input type="number" id="new-vehicle-ventatransf" min="0" required placeholder="90000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+                <div class="pt-3 flex gap-3">
+                    <button type="button" onclick="closeAddVehicleModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs hover:bg-slate-700 transition-all">Cancelar</button>
+                    <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Vehículo -->
+    <div id="edit-vehicle-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full border-cyan-500/30 space-y-4 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-cyan-400"></i> Editar Vehículo
+                </h3>
+                <button onclick="closeEditVehicleModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="edit-vehicle-form" onsubmit="saveEditedVehicle(event)" class="space-y-3">
+                <input type="hidden" id="edit-vehicle-id">
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Marca</label>
+                    <input type="text" id="edit-vehicle-marca" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Modelo</label>
+                    <input type="text" id="edit-vehicle-modelo" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Precio Nuevo ($)</label>
+                        <input type="number" id="edit-vehicle-precio" min="0" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Máx. Compra ($)</label>
+                        <input type="number" id="edit-vehicle-maxcompra" min="0" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Compra Transf. ($)</label>
+                        <input type="number" id="edit-vehicle-compratransf" min="0" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Venta Transf. ($)</label>
+                        <input type="number" id="edit-vehicle-ventatransf" min="0" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+                <div class="pt-3 flex gap-3">
+                    <button type="button" onclick="closeEditVehicleModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs hover:bg-slate-700 transition-all">Cancelar</button>
+                    <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Añadir Venta Manual -->
+    <div id="add-sale-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full border-cyan-500/30 space-y-4 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-receipt text-cyan-400"></i> Registrar Venta Manual
+                </h3>
+                <button onclick="closeAddSaleModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="add-sale-form" onsubmit="saveManualSale(event)" class="space-y-3">
+                <input type="hidden" id="stock-sale-index" value="">
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Nombre del Cliente</label>
+                    <input type="text" id="manual-sale-client" required placeholder="Ej: Juan Pérez" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Vehículo</label>
+                    <input type="text" id="manual-sale-vehicle" required placeholder="Ej: VAPID DOMINATOR" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Matrícula</label>
+                    <input type="text" id="manual-sale-license-plate" required placeholder="Ej: ABC123" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Observaciones</label>
+                    <input type="text" id="manual-sale-details" placeholder="Ej: Motor V8, Ruedas" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    <button type="button" onclick="openManualSaleDetailsEditor()" class="mt-2 px-3 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 text-xs font-bold">Editar configuración y observaciones</button>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Precio de venta ($)</label>
+                        <input type="number" id="manual-sale-total" min="0" required placeholder="150000" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Mecánico</label>
+                        <input type="text" id="manual-sale-mechanic" required placeholder="Nombre mecánico" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+                <div class="pt-3 flex gap-3">
+                    <button type="button" onclick="closeAddSaleModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs hover:bg-slate-700 transition-all">Cancelar</button>
+                    <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all">Guardar Venta</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Compra -->
+    <div id="edit-purchase-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full border-cyan-500/30 space-y-4 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-cyan-400"></i> Editar Compra
+                </h3>
+                <button onclick="closeEditPurchaseModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="edit-purchase-form" onsubmit="saveEditedPurchase(event)" class="space-y-3">
+                <input type="hidden" id="edit-purchase-index">
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Nombre del Cliente</label>
+                    <input type="text" id="edit-purchase-client" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Vehículo</label>
+                            <input type="text" id="edit-purchase-vehicle" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                </div>
+                        <div>
+                            <label class="text-xs text-slate-400 block mb-1">Matrícula</label>
+                            <input type="text" id="edit-purchase-license-plate" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                        </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Detalle Modificaciones</label>
+                    <input type="text" id="edit-purchase-details" readonly class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    <button type="button" onclick="openPurchaseDetailsEditor()" class="mt-2 px-3 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 text-xs font-bold">Editar configuración y observaciones</button>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">TOTAL COMPRA ($)</label>
+                        <input type="number" id="edit-purchase-total" min="0" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Mecánico</label>
+                        <input type="text" id="edit-purchase-mechanic" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+                <div class="pt-3 flex gap-3">
+                    <button type="button" onclick="closeEditPurchaseModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs hover:bg-slate-700 transition-all">Cancelar</button>
+                    <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Venta -->
+    <div id="edit-sale-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden">
+        <div class="glass-panel p-6 rounded-2xl max-w-md w-full border-cyan-500/30 space-y-4 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-cyan-400"></i> Editar Venta
+                </h3>
+                <button onclick="closeEditSaleModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <form id="edit-sale-form" onsubmit="saveEditedSale(event)" class="space-y-3">
+                <input type="hidden" id="edit-sale-index">
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">NOMBRE CLIENTE </label>
+                    <input type="text" id="edit-sale-client" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Vehículo</label>
+                    <input type="text" id="edit-sale-vehicle" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Matrícula</label>
+                    <input type="text" id="edit-sale-license-plate" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400 uppercase">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 block mb-1">Observaciones</label>
+                    <input type="text" id="edit-sale-details" readonly class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    <button type="button" onclick="openSaleDetailsEditor()" class="mt-2 px-3 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 text-xs font-bold">Editar configuración y observaciones</button>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Precio de venta ($)</label>
+                        <input type="number" id="edit-sale-total" min="0" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-400 block mb-1">Mecánico</label>
+                        <input type="text" id="edit-sale-mechanic" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+                    </div>
+                </div>
+                <div class="pt-3 flex gap-3">
+                    <button type="button" onclick="closeEditSaleModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 text-slate-300 font-bold text-xs hover:bg-slate-700 transition-all">Cancelar</button>
+                    <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bottom Sticky Summary Bar (Calculator Only) -->
+    <div id="sticky-calculator-bar" class="fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-cyan-500/30 bg-slate-950/90 py-4 px-4 sm:px-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-6 w-full md:w-auto justify-between md:justify-start">
+                <div>
+                    <span class="text-xs text-slate-400 uppercase tracking-wider block">Total Presupuesto</span>
+                    <span id="summary-total-price" class="text-2xl sm:text-3xl font-black text-cyan-400 text-glow">$0</span>
+                </div>
+                <div class="h-10 w-px bg-slate-800"></div>
+                <div>
+                    <span class="text-xs text-slate-400 uppercase tracking-wider block">Desglose</span>
+                    <span id="summary-items-count" class="text-sm font-semibold text-white">Vehículo + Modificaciones</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 w-full md:w-auto justify-end">
+                <button onclick="resetCalculator()" class="px-4 py-3 rounded-xl bg-slate-800 text-slate-300 font-bold text-sm hover:bg-slate-700 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-left"></i> Reiniciar
+                </button>
+                <button onclick="saveCurrentSaleAsSaleRecord()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 text-slate-950 font-extrabold text-sm shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> Registrar Compra
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de Datos y Lógica de Negocio -->
+    <script>
+        const vehiclesData = [
+            { "id": 0, "marca": "MAMMOTH", "modelo": "PATRIOT", "precioNuevo": 300000, "maxCompra": 150000, "compraTransf": 30000, "ventaTransf": 90000 },
+            { "id": 1, "marca": "CANIS", "modelo": "SEMINOLE", "precioNuevo": 225000, "maxCompra": 112500, "compraTransf": 22500, "ventaTransf": 67500 },
+            { "id": 2, "marca": "BENEFACTOR", "modelo": "XLS", "precioNuevo": 245000, "maxCompra": 122500, "compraTransf": 24500, "ventaTransf": 73500 },
+            { "id": 3, "marca": "ALBANY", "modelo": "CAVALCADE", "precioNuevo": 210000, "maxCompra": 105000, "compraTransf": 21000, "ventaTransf": 63000 },
+            { "id": 4, "marca": "LAMPADATI", "modelo": "NOVAK", "precioNuevo": 215000, "maxCompra": 107500, "compraTransf": 21500, "ventaTransf": 64500 },
+            { "id": 5, "marca": "UBERMACHT", "modelo": "REBLA GTS", "precioNuevo": 255000, "maxCompra": 127500, "compraTransf": 25500, "ventaTransf": 76500 },
+            { "id": 6, "marca": "DUNDREARY", "modelo": "LANDSTALKER XL", "precioNuevo": 235000, "maxCompra": 117500, "compraTransf": 23500, "ventaTransf": 70500 },
+            { "id": 7, "marca": "PEGASSI", "modelo": "TOROS", "precioNuevo": 310000, "maxCompra": 155000, "compraTransf": 31000, "ventaTransf": 93000 },
+            { "id": 8, "marca": "GALLIVANTER", "modelo": "BALLER", "precioNuevo": 280000, "maxCompra": 140000, "compraTransf": 28000, "ventaTransf": 84000 },
+            { "id": 9, "marca": "BENEFACTOR", "modelo": "STREITER", "precioNuevo": 245000, "maxCompra": 122500, "compraTransf": 24500, "ventaTransf": 73500 },
+            { "id": 10, "marca": "KARIN", "modelo": "BEEJAY XL", "precioNuevo": 205000, "maxCompra": 102500, "compraTransf": 20500, "ventaTransf": 61500 },
+            { "id": 11, "marca": "ENUS", "modelo": "ENUS JUBILEE (DESCATALOGADO)", "precioNuevo": 750000, "maxCompra": 375000, "compraTransf": 75000, "ventaTransf": 225000 },
+            { "id": 12, "marca": "GALLIVANTER", "modelo": "BALLER ST", "precioNuevo": 325000, "maxCompra": 162500, "compraTransf": 32500, "ventaTransf": 97500 },
+            { "id": 13, "marca": "BRAVADO", "modelo": "GRESLEY", "precioNuevo": 230000, "maxCompra": 115000, "compraTransf": 23000, "ventaTransf": 69000 },
+            { "id": 14, "marca": "DECLASSE", "modelo": "GRANGER", "precioNuevo": 950000, "maxCompra": 475000, "compraTransf": 95000, "ventaTransf": 285000 },
+            { "id": 15, "marca": "DECLASSE", "modelo": "GRANGER 3600LX", "precioNuevo": 221000, "maxCompra": 110500, "compraTransf": 22100, "ventaTransf": 66300 },
+            { "id": 16, "marca": "VAPID", "modelo": "FMJ", "precioNuevo": 2200000, "maxCompra": 1100000, "compraTransf": 220000, "ventaTransf": 660000 },
+            { "id": 17, "marca": "OVERFLOD", "modelo": "ZENO", "precioNuevo": 1800000, "maxCompra": 900000, "compraTransf": 180000, "ventaTransf": 540000 },
+            { "id": 18, "marca": "PEGASSI", "modelo": "SEVERO", "precioNuevo": 2600000, "maxCompra": 1300000, "compraTransf": 260000, "ventaTransf": 780000 },
+            { "id": 19, "marca": "PROGEN", "modelo": "ITALI GTB", "precioNuevo": 1250000, "maxCompra": 625000, "compraTransf": 125000, "ventaTransf": 375000 },
+            { "id": 20, "marca": "TRUFFADE", "modelo": "NERO", "precioNuevo": 1400000, "maxCompra": 700000, "compraTransf": 140000, "ventaTransf": 420000 },
+            { "id": 21, "marca": "GROTTI", "modelo": "FURIA", "precioNuevo": 1650000, "maxCompra": 825000, "compraTransf": 165000, "ventaTransf": 495000 },
+            { "id": 22, "marca": "PFISTER", "modelo": "COMET S2", "precioNuevo": 550000, "maxCompra": 275000, "compraTransf": 55000, "ventaTransf": 165000 },
+            { "id": 23, "marca": "OBEY", "modelo": "9F", "precioNuevo": 400000, "maxCompra": 200000, "compraTransf": 40000, "ventaTransf": 120000 },
+            { "id": 24, "marca": "KARIN", "modelo": "SULTAN RS", "precioNuevo": 380000, "maxCompra": 190000, "compraTransf": 38000, "ventaTransf": 114000 },
+            { "id": 25, "marca": "ANNIS", "modelo": "ELEGY RH8", "precioNuevo": 320000, "maxCompra": 160000, "compraTransf": 32000, "ventaTransf": 96000 },
+            { "id": 26, "marca": "GROTTI", "modelo": "ITALI GTO", "precioNuevo": 950000, "maxCompra": 475000, "compraTransf": 95000, "ventaTransf": 285000 },
+            { "id": 27, "marca": "PFISTER", "modelo": "GROWLER", "precioNuevo": 520000, "maxCompra": 260000, "compraTransf": 52000, "ventaTransf": 156000 },
+            { "id": 28, "marca": "GROTTI", "modelo": "BESTIA GTS", "precioNuevo": 610000, "maxCompra": 305000, "compraTransf": 61000, "ventaTransf": 183000 },
+            { "id": 29, "marca": "DECLASSE", "modelo": "VIGERO ZX", "precioNuevo": 480000, "maxCompra": 240000, "compraTransf": 48000, "ventaTransf": 144000 },
+            { "id": 30, "marca": "DEBAUCHEE", "modelo": "SPECTER", "precioNuevo": 590000, "maxCompra": 295000, "compraTransf": 59000, "ventaTransf": 177000 },
+            { "id": 31, "marca": "OVERFLOD", "modelo": "ENTITY MT", "precioNuevo": 1750000, "maxCompra": 875000, "compraTransf": 175000, "ventaTransf": 525000 },
+            { "id": 32, "marca": "LAMPADATI", "modelo": "CORSITA", "precioNuevo": 890000, "maxCompra": 445000, "compraTransf": 89000, "ventaTransf": 267000 },
+            { "id": 33, "marca": "OBEY", "modelo": "10F", "precioNuevo": 620000, "maxCompra": 310000, "compraTransf": 62000, "ventaTransf": 186000 },
+            { "id": 34, "marca": "UBERMACHT", "modelo": "RHINEHART", "precioNuevo": 340000, "maxCompra": 170000, "compraTransf": 34000, "ventaTransf": 102000 },
+            { "id": 35, "marca": "DEBAUCHEE", "modelo": "SEVEN-70", "precioNuevo": 680000, "maxCompra": 340000, "compraTransf": 68000, "ventaTransf": 204000 },
+            { "id": 36, "marca": "BENEFACTOR", "modelo": "SM722", "precioNuevo": 720000, "maxCompra": 360000, "compraTransf": 72000, "ventaTransf": 216000 },
+            { "id": 37, "marca": "DINKA", "modelo": "JESTER RR", "precioNuevo": 450000, "maxCompra": 225000, "compraTransf": 45000, "ventaTransf": 135000 },
+            { "id": 38, "marca": "ENUS", "modelo": "PARAGON R", "precioNuevo": 530000, "maxCompra": 265000, "compraTransf": 53000, "ventaTransf": 159000 },
+            { "id": 39, "marca": "GROTTI", "modelo": "CARBONIZARRE", "precioNuevo": 490000, "maxCompra": 245000, "compraTransf": 49000, "ventaTransf": 147000 },
+            { "id": 40, "marca": "PFISTER", "modelo": "ASTRON", "precioNuevo": 360000, "maxCompra": 180000, "compraTransf": 36000, "ventaTransf": 108000 },
+            { "id": 41, "marca": "MAIBATSU", "modelo": "PENUMBRA FF", "precioNuevo": 290000, "maxCompra": 145000, "compraTransf": 29000, "ventaTransf": 87000 },
+            { "id": 42, "marca": "ANNIS", "modelo": "ZR350", "precioNuevo": 410000, "maxCompra": 205000, "compraTransf": 41000, "ventaTransf": 123000 },
+            { "id": 43, "marca": "OBEY", "modelo": "OMNIS E-GT", "precioNuevo": 580000, "maxCompra": 290000, "compraTransf": 58000, "ventaTransf": 174000 },
+            { "id": 44, "marca": "UBERMACHT", "modelo": "CYPHER", "precioNuevo": 390000, "maxCompra": 195000, "compraTransf": 39000, "ventaTransf": 117000 },
+            { "id": 45, "marca": "VAPID", "modelo": "DOMINATOR ASP", "precioNuevo": 330000, "maxCompra": 165000, "compraTransf": 33000, "ventaTransf": 99000 },
+            { "id": 46, "marca": "KARIN", "modelo": "CALICO GTF", "precioNuevo": 370000, "maxCompra": 185000, "compraTransf": 37000, "ventaTransf": 111000 },
+            { "id": 47, "marca": "EMPEROR", "modelo": "VECTRE", "precioNuevo": 430000, "maxCompra": 215000, "compraTransf": 43000, "ventaTransf": 129000 },
+            { "id": 48, "marca": "GROTTI", "modelo": "TURISMO OMBRA", "precioNuevo": 1100000, "maxCompra": 550000, "compraTransf": 110000, "ventaTransf": 330000 },
+            { "id": 49, "marca": "INVETERTO", "modelo": "COQUETTE D10", "precioNuevo": 650000, "maxCompra": 325000, "compraTransf": 65000, "ventaTransf": 195000 },
+            { "id": 50, "marca": "DEBAUCHEE", "modelo": "MASSACRO", "precioNuevo": 460000, "maxCompra": 230000, "compraTransf": 46000, "ventaTransf": 138000 },
+            { "id": 51, "marca": "LAMPADATI", "modelo": "KOMODA", "precioNuevo": 310000, "maxCompra": 155000, "compraTransf": 31000, "ventaTransf": 93000 },
+            { "id": 52, "marca": "ALBANY", "modelo": "ALPHA", "precioNuevo": 270000, "maxCompra": 135000, "compraTransf": 27000, "ventaTransf": 81000 },
+            { "id": 53, "marca": "BENEFACTOR", "modelo": "SCHLAGEN GT", "precioNuevo": 510000, "maxCompra": 255000, "compraTransf": 51000, "ventaTransf": 153000 },
+            { "id": 54, "marca": "BRAVADO", "modelo": "BUFFALO STX", "precioNuevo": 420000, "maxCompra": 210000, "compraTransf": 42000, "ventaTransf": 126000 },
+            { "id": 55, "marca": "KARIN", "modelo": "SULTAN CLASSIC", "precioNuevo": 280000, "maxCompra": 140000, "compraTransf": 28000, "ventaTransf": 84000 },
+            { "id": 56, "marca": "UBERMACHT", "modelo": "SENTINEL CLASSIC", "precioNuevo": 230000, "maxCompra": 115000, "compraTransf": 23000, "ventaTransf": 69000 },
+            { "id": 57, "marca": "VAPID", "modelo": "DOMINATOR GT", "precioNuevo": 350000, "maxCompra": 175000, "compraTransf": 35000, "ventaTransf": 105000 },
+            { "id": 58, "marca": "GROTTI", "modelo": "ITALI GTO STINGER TT", "precioNuevo": 1350000, "maxCompra": 675000, "compraTransf": 135000, "ventaTransf": 405000 },
+            { "id": 59, "marca": "PEGASSI", "modelo": "TORERO XO", "precioNuevo": 1900000, "maxCompra": 950000, "compraTransf": 190000, "ventaTransf": 570000 },
+            { "id": 60, "marca": "BENEFACOR", "modelo": "SCHAFTER V12", "precioNuevo": 290000, "maxCompra": 145000, "compraTransf": 29000, "ventaTransf": 87000 },
+            { "id": 61, "marca": "DINKA", "modelo": "RT3000", "precioNuevo": 260000, "maxCompra": 130000, "compraTransf": 26000, "ventaTransf": 78000 },
+            { "id": 62, "marca": "ANNIS", "modelo": "EUROS", "precioNuevo": 380000, "maxCompra": 190000, "compraTransf": 38000, "ventaTransf": 114000 },
+            { "id": 63, "marca": "VAPID", "modelo": "DOMINATOR GTT", "precioNuevo": 310000, "maxCompra": 155000, "compraTransf": 31000, "ventaTransf": 93000 },
+            { "id": 64, "marca": "KARIN", "modelo": "FUTO GTX", "precioNuevo": 210000, "maxCompra": 105000, "compraTransf": 21000, "ventaTransf": 63000 },
+            { "id": 65, "marca": "VULCAR", "modelo": "WARRENER HKR", "precioNuevo": 180000, "maxCompra": 90000, "compraTransf": 18000, "ventaTransf": 54000 },
+            { "id": 66, "marca": "OBEY", "modelo": "ROCOTO", "precioNuevo": 200000, "maxCompra": 100000, "compraTransf": 20000, "ventaTransf": 60000 },
+            { "id": 67, "marca": "PROGEN", "modelo": "GP1", "precioNuevo": 1150000, "maxCompra": 575000, "compraTransf": 115000, "ventaTransf": 345000 },
+            { "id": 68, "marca": "PEGASSI", "modelo": "TEMPESTA", "precioNuevo": 1300000, "maxCompra": 650000, "compraTransf": 130000, "ventaTransf": 390000 },
+            { "id": 69, "marca": "GROTTI", "modelo": "TURISMO R", "precioNuevo": 980000, "maxCompra": 490000, "compraTransf": 98000, "ventaTransf": 294000 },
+            { "id": 70, "marca": "PFISTER", "modelo": "COMET SR", "precioNuevo": 480000, "maxCompra": 240000, "compraTransf": 48000, "ventaTransf": 144000 },
+            { "id": 71, "marca": "UBERMACHT", "modelo": "SC1", "precioNuevo": 750000, "maxCompra": 375000, "compraTransf": 75000, "ventaTransf": 225000 },
+            { "id": 72, "marca": "DEBAUCHEE", "modelo": "RAPID GT", "precioNuevo": 350000, "maxCompra": 175000, "compraTransf": 35000, "ventaTransf": 105000 },
+            { "id": 73, "marca": "HIJYAKU", "modelo": "KHAMELION", "precioNuevo": 290000, "maxCompra": 145000, "compraTransf": 29000, "ventaTransf": 87000 },
+            { "id": 74, "marca": "BRAVADO", "modelo": "GAUNTLET HELLFIRE", "precioNuevo": 380000, "maxCompra": 190000, "compraTransf": 38000, "ventaTransf": 114000 },
+            { "id": 75, "marca": "DECLASSE", "modelo": "DRIFT TAMPA", "precioNuevo": 320000, "maxCompra": 160000, "compraTransf": 32000, "ventaTransf": 96000 },
+            { "id": 76, "marca": "VAPID", "modelo": "DRIFT YOSEMITE", "precioNuevo": 270000, "maxCompra": 135000, "compraTransf": 27000, "ventaTransf": 81000 },
+            { "id": 77, "marca": "ALBANY", "modelo": "HERMES", "precioNuevo": 240000, "maxCompra": 120000, "compraTransf": 24000, "ventaTransf": 72000 },
+            { "id": 78, "marca": "SCHYSTER", "modelo": "DEVIANT", "precioNuevo": 260000, "maxCompra": 130000, "compraTransf": 26000, "ventaTransf": 78000 },
+            { "id": 79, "marca": "DECLASSE", "modelo": "TULIP", "precioNuevo": 210000, "maxCompra": 105000, "compraTransf": 21000, "ventaTransf": 63000 },
+            { "id": 80, "marca": "VAPID", "modelo": "CLIQUE", "precioNuevo": 190000, "maxCompra": 95000, "compraTransf": 19000, "ventaTransf": 57000 },
+            { "id": 81, "marca": "DECLASSE", "modelo": "VAMOS", "precioNuevo": 220000, "maxCompra": 110000, "compraTransf": 22000, "ventaTransf": 66000 },
+            { "id": 82, "marca": "DECLASSE", "modelo": "IMPALER", "precioNuevo": 200000, "maxCompra": 100000, "compraTransf": 20000, "ventaTransf": 60000 },
+            { "id": 83, "marca": "WILLARD", "modelo": "FACTION", "precioNuevo": 170000, "maxCompra": 85000, "compraTransf": 17000, "ventaTransf": 51000 },
+            { "id": 84, "marca": "ALBANY", "modelo": "VIRGO", "precioNuevo": 160000, "maxCompra": 80000, "compraTransf": 16000, "ventaTransf": 48000 },
+            { "id": 85, "marca": "DECLASSE", "modelo": "MOONBEAM", "precioNuevo": 150000, "maxCompra": 75000, "compraTransf": 15000, "ventaTransf": 45000 },
+            { "id": 86, "marca": "VAPID", "modelo": "SLAMVAN", "precioNuevo": 180000, "maxCompra": 90000, "compraTransf": 18000, "ventaTransf": 54000 },
+            { "id": 87, "marca": "BRAVADO", "modelo": "RAT-LOADER", "precioNuevo": 90000, "maxCompra": 45000, "compraTransf": 9000, "ventaTransf": 27000 },
+            { "id": 88, "marca": "ALBANY", "modelo": "BUCCANEER", "precioNuevo": 175000, "maxCompra": 87500, "compraTransf": 17500, "ventaTransf": 52500 },
+            { "id": 89, "marca": "DECLASSE", "modelo": "VOODOO", "precioNuevo": 140000, "maxCompra": 70000, "compraTransf": 14000, "ventaTransf": 42000 },
+            { "id": 90, "marca": "DECLASSE", "modelo": "STALLION", "precioNuevo": 165000, "maxCompra": 82500, "compraTransf": 16500, "ventaTransf": 49500 },
+            { "id": 91, "marca": "DECLASSE", "modelo": "SABRE TURBO", "precioNuevo": 185000, "maxCompra": 92500, "compraTransf": 18500, "ventaTransf": 55500 },
+            { "id": 92, "marca": "INVETERTO", "modelo": "COQUETTE BLACKFIN", "precioNuevo": 310000, "maxCompra": 155000, "compraTransf": 31000, "ventaTransf": 93000 },
+            { "id": 93, "marca": "DECLASSE", "modelo": "MAMBA", "precioNuevo": 340000, "maxCompra": 170000, "compraTransf": 34000, "ventaTransf": 102000 },
+            { "id": 94, "marca": "BRAVADO", "modelo": "GAUNTLET CLASSIC", "precioNuevo": 230000, "maxCompra": 115000, "compraTransf": 23000, "ventaTransf": 69000 },
+            { "id": 95, "marca": "VAPID", "modelo": "PEYOTE", "precioNuevo": 150000, "maxCompra": 75000, "compraTransf": 15000, "ventaTransf": 45000 },
+            { "id": 96, "marca": "DECLASSE", "modelo": "TULIP M-100", "precioNuevo": 225000, "maxCompra": 112500, "compraTransf": 22500, "ventaTransf": 67500 },
+            { "id": 97, "marca": "DECLASSE", "modelo": "TAHOE 2023", "precioNuevo": 280000, "maxCompra": 140000, "compraTransf": 28000, "ventaTransf": 84000 },
+            { "id": 98, "marca": "DECLASSE", "modelo": "WALTON L35", "precioNuevo": 195000, "maxCompra": 97500, "compraTransf": 1950, "ventaTransf": 58500 },
+            { "id": 99, "marca": "VAPID", "modelo": "CHINO", "precioNuevo": 155000, "maxCompra": 77500, "compraTransf": 15500, "ventaTransf": 46500 },
+            { "id": 100, "marca": "DECLASSE", "modelo": "IMPALER LX", "precioNuevo": 215000, "maxCompra": 107500, "compraTransf": 21500, "ventaTransf": 64500 },
+            { "id": 101, "marca": "VAPID", "modelo": "DOMINATOR FX", "precioNuevo": 295000, "maxCompra": 147500, "compraTransf": 29500, "ventaTransf": 88500 },
+            { "id": 102, "marca": "DECLASSE", "modelo": "IMPALER SZ", "precioNuevo": 205000, "maxCompra": 102500, "compraTransf": 20500, "ventaTransf": 61500 },
+            { "id": 103, "marca": "CANIS", "modelo": "TERMINUS", "precioNuevo": 310000, "maxCompra": 155000, "compraTransf": 31000, "ventaTransf": 93000 },
+            { "id": 104, "marca": "KARIN", "modelo": "SULTAN", "precioNuevo": 160000, "maxCompra": 80000, "compraTransf": 16000, "ventaTransf": 48000 },
+            { "id": 105, "marca": "BF", "modelo": "BIFTA", "precioNuevo": 110000, "maxCompra": 55000, "compraTransf": 11000, "ventaTransf": 33000 },
+            { "id": 106, "marca": "CANIS", "modelo": "KALAHARI", "precioNuevo": 95000, "maxCompra": 47500, "compraTransf": 9500, "ventaTransf": 28500 },
+            { "id": 107, "marca": "VAPID", "modelo": "DESERT RAID", "precioNuevo": 240000, "maxCompra": 120000, "compraTransf": 24000, "ventaTransf": 72000 },
+            { "id": 108, "marca": "VAPID", "modelo": "TROPHY TRUCK", "precioNuevo": 250000, "maxCompra": 125000, "compraTransf": 25000, "ventaTransf": 75000 },
+            { "id": 109, "marca": "NAGASAKI", "modelo": "OUTLAW", "precioNuevo": 180000, "maxCompra": 90000, "compraTransf": 18000, "ventaTransf": 54000 },
+            { "id": 110, "marca": "MAXWELL", "modelo": "VAGRANT", "precioNuevo": 190000, "maxCompra": 95000, "compraTransf": 19000, "ventaTransf": 57000 },
+            { "id": 111, "marca": "KARIN", "modelo": "EVERON", "precioNuevo": 270000, "maxCompra": 135000, "compraTransf": 27000, "ventaTransf": 81000 },
+            { "id": 112, "marca": "BRAVADO", "modelo": "BISON", "precioNuevo": 150000, "maxCompra": 75000, "compraTransf": 15000, "ventaTransf": 45000 },
+            { "id": 113, "marca": "VAPID", "modelo": "BOBCAT XL", "precioNuevo": 130000, "maxCompra": 65000, "compraTransf": 13000, "ventaTransf": 39000 },
+            { "id": 114, "marca": "DECLASSE", "modelo": "WALTON L35 4X4", "precioNuevo": 210000, "maxCompra": 105000, "compraTransf": 21000, "ventaTransf": 63000 },
+            { "id": 115, "marca": "VAPID", "modelo": "SANDKING XL", "precioNuevo": 220000, "maxCompra": 110000, "compraTransf": 22000, "ventaTransf": 66000 },
+            { "id": 116, "marca": "CANIS", "modelo": "BODHI", "precioNuevo": 120000, "maxCompra": 60000, "compraTransf": 12000, "ventaTransf": 36000 },
+            { "id": 117, "marca": "KARIN", "modelo": "REBEL", "precioNuevo": 115000, "maxCompra": 57500, "compraTransf": 11500, "ventaTransf": 34500 },
+            { "id": 118, "marca": "VAPID", "modelo": "RADIUS", "precioNuevo": 140000, "maxCompra": 70000, "compraTransf": 14000, "ventaTransf": 42000 },
+            { "id": 119, "marca": "KARIN", "modelo": "HOTRING EVERON", "precioNuevo": 310000, "maxCompra": 155000, "compraTransf": 31000, "ventaTransf": 93000 },
+            { "id": 120, "marca": "DECLASSE", "modelo": "HOTRING SABRE", "precioNuevo": 290000, "maxCompra": 145000, "compraTransf": 29000, "ventaTransf": 87000 },
+            { "id": 121, "marca": "ANNIS", "modelo": "300XR", "precioNuevo": 460000, "maxCompra": 230000, "compraTransf": 46000, "ventaTransf": 138000 },
+            { "id": 122, "marca": "MAIBATSU", "modelo": "MONSTROCITI", "precioNuevo": 230000, "maxCompra": 115000, "compraTransf": 23000, "ventaTransf": 69000 },
+            { "id": 123, "marca": "DINKA", "modelo": "SUGOI", "precioNuevo": 210000, "maxCompra": 105000, "compraTransf": 21000, "ventaTransf": 63000 },
+            { "id": 124, "marca": "DINKA", "modelo": "BLISTA KANJO", "precioNuevo": 160000, "maxCompra": 80000, "compraTransf": 16000, "ventaTransf": 48000 },
+            { "id": 125, "marca": "VAPID", "modelo": "RETINUE MKII", "precioNuevo": 175000, "maxCompra": 87500, "compraTransf": 17500, "ventaTransf": 52500 },
+            { "id": 126, "marca": "KARIN", "modelo": "ASBO", "precioNuevo": 120000, "maxCompra": 60000, "compraTransf": 12000, "ventaTransf": 36000 },
+            { "id": 127, "marca": "VULCAR", "modelo": "NEBULA TURBO", "precioNuevo": 150000, "maxCompra": 75000, "compraTransf": 15000, "ventaTransf": 45000 },
+            { "id": 128, "marca": "ANNIS", "modelo": "SAVESTRA", "precioNuevo": 190000, "maxCompra": 95000, "compraTransf": 19000, "ventaTransf": 57000 },
+            { "id": 129, "marca": "DINKA", "modelo": "KANJO SJ", "precioNuevo": 165000, "maxCompra": 82500, "compraTransf": 16500, "ventaTransf": 49500 },
+            { "id": 130, "marca": "POSTLUDIO", "modelo": "POSTLUDIO", "precioNuevo": 140000, "maxCompra": 70000, "compraTransf": 14000, "ventaTransf": 42000 },
+            { "id": 131, "marca": "BENEFACTOR", "modelo": "SERANO", "precioNuevo": 180000, "maxCompra": 90000, "compraTransf": 18000, "ventaTransf": 54000 },
+            { "id": 132, "marca": "FATHOM", "modelo": "FQ 2", "precioNuevo": 150000, "maxCompra": 75000, "compraTransf": 15000, "ventaTransf": 45000 },
+            { "id": 133, "marca": "BF", "modelo": "BISCIONE", "precioNuevo": 260000, "maxCompra": 130000, "compraTransf": 26000, "ventaTransf": 78000 },
+            { "id": 134, "marca": "BF", "modelo": "SURANO", "precioNuevo": 210000, "maxCompra": 105000, "compraTransf": 21000, "ventaTransf": 63000 },
+            { "id": 135, "marca": "VAPID", "modelo": "ALEUTIAN", "precioNuevo": 290000, "maxCompra": 145000, "compraTransf": 29000, "ventaTransf": 87000 },
+            { "id": 136, "marca": "KARIN", "modelo": "VIVANITE", "precioNuevo": 240000, "maxCompra": 120000, "compraTransf": 24000, "ventaTransf": 72000 },
+            { "id": 137, "marca": "GALLIVANTER", "modelo": "BALLER SECOND", "precioNuevo": 260000, "maxCompra": 130000, "compraTransf": 26000, "ventaTransf": 78000 },
+            { "id": 138, "marca": "OBEY", "modelo": "ARGENTO", "precioNuevo": 270000, "maxCompra": 135000, "compraTransf": 27000, "ventaTransf": 81000 },
+            { "id": 139, "marca": "DECLASSE", "modelo": "PRELUDE", "precioNuevo": 190000, "maxCompra": 95000, "compraTransf": 19000, "ventaTransf": 57000 },
+            { "id": 140, "marca": "UBERMACHT", "modelo": "ORACLE", "precioNuevo": 180000, "maxCompra": 90000, "compraTransf": 18000, "ventaTransf": 54000 },
+            { "id": 141, "marca": "UBERMACHT", "modelo": "ORACLE XS", "precioNuevo": 185000, "maxCompra": 92500, "compraTransf": 18500, "ventaTransf": 55500 },
+            { "id": 142, "marca": "ALBANY", "modelo": "WASHINGTON", "precioNuevo": 130000, "maxCompra": 65000, "compraTransf": 13000, "ventaTransf": 39000 },
+            { "id": 143, "marca": "ALBANY", "modelo": "PRIMO", "precioNuevo": 110000, "maxCompra": 55000, "compraTransf": 11000, "ventaTransf": 33000 },
+            { "id": 144, "marca": "DECLASSE", "modelo": "AUSTER", "precioNuevo": 125000, "maxCompra": 62500, "compraTransf": 12500, "ventaTransf": 37500 },
+            { "id": 145, "marca": "CHEVAL", "modelo": "FUUGITIVE", "precioNuevo": 140000, "maxCompra": 70000, "compraTransf": 14000, "ventaTransf": 42000 },
+            { "id": 146, "marca": "CHEVAL", "modelo": "SURGE", "precioNuevo": 135000, "maxCompra": 67500, "compraTransf": 13500, "ventaTransf": 40500 },
+            { "id": 147, "marca": "DECLASSE", "modelo": "PREMIER", "precioNuevo": 105000, "maxCompra": 52500, "compraTransf": 10500, "ventaTransf": 31500 },
+            { "id": 148, "marca": "OBEY", "modelo": "TAILGATER", "precioNuevo": 160000, "maxCompra": 80000, "compraTransf": 16000, "ventaTransf": 48000 },
+            { "id": 149, "marca": "KARIN", "modelo": "INTRUDER", "precioNuevo": 115000, "maxCompra": 57500, "compraTransf": 11500, "ventaTransf": 34500 },
+            { "id": 150, "marca": "KARIN", "modelo": "ASTEROPE", "precioNuevo": 120000, "maxCompra": 60000, "compraTransf": 12000, "ventaTransf": 36000 },
+            { "id": 151, "marca": "ALBANY", "modelo": "HERMES SEDAN", "precioNuevo": 150000, "maxCompra": 75000, "compraTransf": 15000, "ventaTransf": 45000 },
+            { "id": 152, "marca": "ZIRCONIUM", "modelo": "STRATUM", "precioNuevo": 100000, "maxCompra": 50000, "compraTransf": 10000, "ventaTransf": 30000 },
+            { "id": 153, "marca": "VAPID", "modelo": "STANIER", "precioNuevo": 115000, "maxCompra": 57500, "compraTransf": 11500, "ventaTransf": 34500 },
+            { "id": 154, "marca": "DECLASSE", "modelo": "TORNADO", "precioNuevo": 130000, "maxCompra": 65000, "compraTransf": 13000, "ventaTransf": 39000 },
+            { "id": 155, "marca": "VAPID", "modelo": "PEYOTE CLASSIC", "precioNuevo": 125000, "maxCompra": 62500, "compraTransf": 12500, "ventaTransf": 37500 },
+            { "id": 156, "marca": "ALBANY", "modelo": "MANANA", "precioNuevo": 110000, "maxCompra": 55000, "compraTransf": 11000, "ventaTransf": 33000 },
+            { "id": 157, "marca": "ALBANY", "modelo": "EMPEROR", "precioNuevo": 95000, "maxCompra": 47500, "compraTransf": 9500, "ventaTransf": 28500 },
+            { "id": 158, "marca": "VAPID", "modelo": "MINIVAN", "precioNuevo": 105000, "maxCompra": 52500, "compraTransf": 10500, "ventaTransf": 31500 },
+            { "id": 159, "marca": "DECLASSE", "modelo": "BURRITO", "precioNuevo": 110000, "maxCompra": 55000, "compraTransf": 11000, "ventaTransf": 33000 },
+            { "id": 160, "marca": "BRAVADO", "modelo": "RUMPO", "precioNuevo": 115000, "maxCompra": 57500, "compraTransf": 11500, "ventaTransf": 34500 },
+            { "id": 161, "marca": "BRAVADO", "modelo": "YOUGA", "precioNuevo": 100000, "maxCompra": 50000, "compraTransf": 10000, "ventaTransf": 30000 },
+            { "id": 162, "marca": "VAPID", "modelo": "SPEEDO", "precioNuevo": 120000, "maxCompra": 60000, "compraTransf": 12000, "ventaTransf": 36000 },
+            { "id": 163, "marca": "BRAVADO", "modelo": "PARADISE", "precioNuevo": 125000, "maxCompra": 62500, "compraTransf": 12500, "ventaTransf": 37500 },
+            { "id": 164, "marca": "BF", "modelo": "SURFER", "precioNuevo": 85000, "maxCompra": 42500, "compraTransf": 8500, "ventaTransf": 25500 },
+            { "id": 165, "marca": "KARIN", "modelo": "DILETTANTE", "precioNuevo": 90000, "maxCompra": 45000, "compraTransf": 9000, "ventaTransf": 27000 },
+            { "id": 166, "marca": "DINKA", "modelo": "BLISTA", "precioNuevo": 80000, "maxCompra": 40000, "compraTransf": 8000, "ventaTransf": 24000 },
+            { "id": 167, "marca": "DECLASSE", "modelo": "RHAPSODY", "precioNuevo": 75000, "maxCompra": 37500, "compraTransf": 7500, "ventaTransf": 22500 },
+            { "id": 168, "marca": "KARIN", "modelo": "FUTO", "precioNuevo": 95000, "maxCompra": 47500, "compraTransf": 9500, "ventaTransf": 28500 },
+            { "id": 169, "marca": "DINKA", "modelo": "BLISTA COMPACT", "precioNuevo": 35950, "maxCompra": 17975, "compraTransf": 3595, "ventaTransf": 10785 }
+        ];
+
+        let selectedVehicle = null;
+        let isFullTuning = false;
+        let selectedMainMods = {};
+        let activeTab = 'calculator';
+        let detailEditorContext = null;
+        let manualSaleConfiguration = {};
+        let manualSaleObservations = '';
+
+        // Funciones básicas de navegación y lógica
+        function switchTab(tabId) {
+            activeTab = tabId;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-cyan-500/20', 'text-cyan-300', 'border', 'border-cyan-500/40', 'shadow-lg', 'shadow-cyan-500/10');
+                btn.classList.add('text-slate-400', 'hover:text-cyan-300', 'hover:bg-slate-800/50');
+            });
+            
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-400', 'hover:text-cyan-300', 'hover:bg-slate-800/50');
+                activeBtn.classList.add('bg-cyan-500/20', 'text-cyan-300', 'border', 'border-cyan-500/40', 'shadow-lg', 'shadow-cyan-500/10');
+            }
+
+            const stickyBar = document.getElementById('sticky-calculator-bar');
+            if (tabId === 'calculator') {
+                stickyBar.classList.remove('hidden');
+            } else {
+                stickyBar.classList.add('hidden');
+            }
+
+            if (tabId === 'inventory') renderInventoryTable();
+            if (tabId === 'stock') {
+                populateStockVehicleSelect();
+                renderStockTable();
+            }
+            if (tabId === 'purchases') renderPurchasesTable();
+            if (tabId === 'sales') renderSalesTable();
+            if (tabId === 'transfers') renderTransfersTable();
+            if (tabId === 'transfers') populateTransferVehicleOptions();
+        }
+
+        function populateVehicleDropdown(filterText = '') {
+            const input = document.getElementById('calc-vehicle-select');
+            const optionsList = document.getElementById('vehicle-options');
+            optionsList.innerHTML = '';
+            
+            const filtered = vehiclesData.filter(v => 
+                `${v.marca} ${v.modelo}`.toLowerCase().includes(filterText.toLowerCase())
+            );
+
+            filtered.forEach(v => {
+                const option = document.createElement('option');
+                option.value = `${v.marca} - ${v.modelo} (Máx: $${v.maxCompra.toLocaleString()})`;
+                optionsList.appendChild(option);
+            });
+
+            if (filtered.length > 0 && !input.value) {
+                input.value = `${filtered[0].marca} - ${filtered[0].modelo} (Máx: $${filtered[0].maxCompra.toLocaleString()})`;
+                onVehicleSelectChange();
+            }
+        }
+
+        function onVehicleSelectChange() {
+            const selectedText = document.getElementById('calc-vehicle-select').value;
+            selectedVehicle = vehiclesData.find(v =>
+                selectedText === `${v.marca} - ${v.modelo} (Máx: $${v.maxCompra.toLocaleString()})`
+            );
+            if (selectedVehicle) {
+                document.getElementById('display-marca').textContent = selectedVehicle.marca;
+                document.getElementById('display-modelo').textContent = selectedVehicle.modelo;
+                document.getElementById('display-max-compra').textContent = `$${selectedVehicle.maxCompra.toLocaleString()}`;
+                document.getElementById('display-precio-nuevo').textContent = `$${selectedVehicle.precioNuevo.toLocaleString()}`;
+                document.getElementById('display-venta-transf').textContent = `$${selectedVehicle.ventaTransf.toLocaleString()}`;
+            }
+            calculateTotal();
+        }
+
+        function toggleFullTuning(isChecked) {
+            isFullTuning = isChecked;
+            const label = document.getElementById('full-tuning-label');
+            const mainModsSec = document.getElementById('main-mods-section');
+            const tractionSelect = document.getElementById('traction-type');
+            tractionSelect.disabled = false;
+            
+            if (isChecked) {
+                label.textContent = "ACTIVADO (+$55.000)";
+                mainModsSec.style.opacity = '0.4';
+                mainModsSec.style.pointerEvents = 'none';
+            } else {
+                label.textContent = "DESACTIVADO";
+                mainModsSec.style.opacity = '1';
+                mainModsSec.style.pointerEvents = 'auto';
+            }
+            updateTractionSelection();
+            calculateTotal();
+        }
+
+        function updateTractionSelection() {
+            const tractionCard = document.getElementById('card-traction');
+            const tractionSelected = parseInt(document.getElementById('traction-type').value) > 0;
+            tractionCard.classList.toggle('card-selected', tractionSelected);
+        }
+
+        function updateWheelSelection() {
+            const wheelCard = document.getElementById('card-ruedas');
+            const wheelSelected = parseInt(document.getElementById('wheel-type').value) > 0;
+            wheelCard.classList.toggle('card-selected', wheelSelected);
+            calculateTotal();
+        }
+
+        function toggleMainMod(modKey, price) {
+            if (isFullTuning) return;
+            const card = document.getElementById(`card-${modKey}`);
+            if (selectedMainMods[modKey]) {
+                delete selectedMainMods[modKey];
+                card.classList.remove('card-selected');
+            } else {
+                selectedMainMods[modKey] = { price, name: card.querySelector('h4').textContent };
+                card.classList.add('card-selected');
+            }
+            calculateTotal();
+        }
+
+        function updateCosmeticCount() {
+            const count = parseInt(document.getElementById('cosmetic-count').value) || 0;
+            const totalCosmetic = count * 5000;
+            document.getElementById('cosmetic-total-price').textContent = `$${totalCosmetic.toLocaleString()}`;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            if (!selectedVehicle) return;
+            let total = selectedVehicle.maxCompra;
+            
+            if (isFullTuning) {
+                total += 55000;
+            } else {
+                for (let key in selectedMainMods) {
+                    total += selectedMainMods[key].price;
+                }
+            }
+            total += parseInt(document.getElementById('traction-type').value) || 0;
+            total += parseInt(document.getElementById('wheel-type').value) || 0;
+
+            const cosmeticCount = parseInt(document.getElementById('cosmetic-count').value) || 0;
+            total += cosmeticCount * 5000;
+
+            const performanceFields = ['motor', 'brakes', 'turbo', 'transmission', 'suspension', 'armor'];
+            const performanceCount = performanceFields.filter(field => {
+                return (parseInt(document.getElementById(`performance-${field}`).value) || 0) > 0;
+            }).length;
+            total += performanceCount * 5000;
+
+            document.getElementById('summary-total-price').textContent = `$${total.toLocaleString()}`;
+            updateSummaryBreakdown(cosmeticCount, performanceCount);
+        }
+
+        function updateSummaryBreakdown(cosmeticCount, performanceUnits = 0) {
+            const performanceCount = Object.keys(selectedMainMods).length + (['motor', 'brakes', 'turbo', 'transmission', 'suspension', 'armor']
+                .filter(field => (parseInt(document.getElementById(`performance-${field}`).value) || 0) > 0).length);
+            const fullTuningText = isFullTuning ? ' + Full Tuning x1' : '';
+            const vehicleText = selectedVehicle ? `${selectedVehicle.marca} ${selectedVehicle.modelo}` : 'Vehículo';
+
+            document.getElementById('summary-items-count').textContent =
+                `${vehicleText}${fullTuningText} + ${performanceCount} rendimiento(s) + ${cosmeticCount} cosmético(s)`;
+        }
+
+        function resetCalculator() {
+            document.getElementById('toggle-full-tuning').checked = false;
+            toggleFullTuning(false);
+            document.getElementById('traction-type').value = '0';
+            document.getElementById('wheel-type').value = '0';
+            updateTractionSelection();
+            updateWheelSelection();
+            selectedMainMods = {};
+            document.querySelectorAll('[id^="card-"]').forEach(c => c.classList.remove('card-selected'));
+            document.getElementById('cosmetic-count').value = 0;
+            document.querySelectorAll('[id^="performance-"]').forEach(select => {
+                if (select.tagName === 'SELECT') select.value = '0';
+            });
+            updateCosmeticCount();
+            document.getElementById('client-name').value = '';
+            document.getElementById('mechanic-name').value = '';
+            document.getElementById('calculator-license-plate').value = '';
+            document.getElementById('mechanic-observations').value = '';
+            onVehicleSelectChange();
+        }
+
+        function updatePerformanceTotal() {
+            const performanceFields = ['motor', 'brakes', 'turbo', 'transmission', 'suspension', 'armor'];
+            const performanceCount = performanceFields.filter(field => {
+                return (parseInt(document.getElementById(`performance-${field}`).value) || 0) > 0;
+            }).length;
+            document.getElementById('performance-total-price').textContent = `$${(performanceCount * 5000).toLocaleString()}`;
+            calculateTotal();
+        }
+
+        // Modales y CRUD simple de tablas
+        function renderInventoryTable() {
+            const tbody = document.getElementById('inventory-table-body');
+            tbody.innerHTML = '';
+            const query = document.getElementById('inventory-search')?.value.toLowerCase() || '';
+            
+            const filtered = vehiclesData.filter(v => `${v.marca} ${v.modelo}`.toLowerCase().includes(query));
+            document.getElementById('catalog-total-count').textContent = filtered.length;
+
+            filtered.forEach(v => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="px-6 py-4 font-bold text-white">${v.marca}</td>
+                    <td class="px-6 py-4 text-cyan-400 font-medium">${v.modelo}</td>
+                    <td class="px-6 py-4 text-right text-emerald-400 font-bold">$${v.precioNuevo.toLocaleString()}</td>
+                    <td class="px-6 py-4 text-right text-amber-400 font-bold">$${v.maxCompra.toLocaleString()}</td>
+                    <td class="px-6 py-4 text-right text-slate-300">$${v.compraTransf.toLocaleString()}</td>
+                    <td class="px-6 py-4 text-right text-slate-300">$${v.ventaTransf.toLocaleString()}</td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                        <button onclick="openEditVehicleModal(${v.id})" class="p-2 text-cyan-400 hover:text-white transition-colors"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteVehicle(${v.id})" class="p-2 text-red-400 hover:text-red-300 transition-colors"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function populateStockVehicleSelect() {
+            const select = document.getElementById('stock-vehicle-select');
+            select.innerHTML = '<option value="">Seleccionar vehículo del catálogo...</option>';
+            vehiclesData.forEach(vehicle => {
+                const option = document.createElement('option');
+                option.value = vehicle.id;
+                option.textContent = `${vehicle.marca} - ${vehicle.modelo}`;
+                select.appendChild(option);
+            });
+        }
+
+        function renderStockTable() {
+            const tbody = document.getElementById('stock-table-body');
+            const stock = getLocalStorageData('merca_stock');
+            tbody.innerHTML = '';
+
+            stock.forEach(item => {
+                const vehicle = vehiclesData.find(candidate => candidate.id === item.id);
+                if (!vehicle) return;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4 font-bold text-white">${vehicle.marca}</td>
+                    <td class="px-6 py-4 text-cyan-400 font-medium">${vehicle.modelo}</td>
+                    <td class="px-6 py-4 text-white">${item.licensePlate || 'Sin matrícula'}</td>
+                    <td class="px-6 py-4 text-right font-bold text-white">${item.quantity}</td>
+                    <td class="px-6 py-4 text-xs text-slate-300"><button onclick="openStockDetailsModal(${stock.indexOf(item)})" class="text-cyan-400 hover:text-white underline">Detalles</button><span class="block mt-1">${item.observations || 'Sin observaciones'}</span></td>
+                    <td class="px-6 py-4 text-right text-red-400 font-bold"><button onclick="editStockSalePrice(${stock.indexOf(item)})" class="hover:text-red-300 underline">${item.salePrice || 'POR DETERMINAR'}</button></td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap"><button onclick="prepareStockSale(${stock.indexOf(item)})" class="px-3 py-2 rounded-lg bg-red-600 text-white font-extrabold text-xs hover:bg-red-500">VENDER</button><button onclick="editStockSalePrice(${stock.indexOf(item)})" class="p-2 text-red-400 hover:text-red-300" title="Editar precio de venta"><i class="fa-solid fa-pen"></i></button><button onclick="removeVehicleFromStock(${stock.indexOf(item)})" class="p-2 text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function toggleStockTraction(isEnabled) {
+            document.getElementById('stock-detail-traction').disabled = !isEnabled;
+        }
+
+        function openStockDetailsModal(stockIndex) {
+            const stock = getLocalStorageData('merca_stock');
+            const item = stock[stockIndex];
+            if (!item) return;
+            detailEditorContext = { type: 'stock', index: stockIndex };
+            openDetailsEditor(item.configuration, item.observations);
+        }
+
+        function openDetailsEditor(configuration = {}, observations = '') {
+            document.getElementById('stock-detail-full-tuning').checked = Boolean(configuration.fullTuning);
+            document.getElementById('stock-detail-traction').value = configuration.traction || '0';
+            toggleStockTraction(true);
+            const mainModCheckboxes = { motorV8: 'motorV8', turboKit: 'turbo', brakesKit: 'frenos' };
+            Object.keys(mainModCheckboxes).forEach(key => {
+                document.getElementById(`stock-detail-${key}`).checked = (configuration.mainMods || []).includes(mainModCheckboxes[key]);
+            });
+            document.getElementById('stock-detail-wheels').value = configuration.wheels || '0';
+            ['motor', 'brakes', 'turbo', 'transmission', 'suspension', 'armor'].forEach(field => {
+                document.getElementById(`stock-detail-${field}`).value = configuration.performance?.[field] || '0';
+            });
+            document.getElementById('stock-detail-cosmetics').value = configuration.cosmetics || 0;
+            document.getElementById('stock-detail-observations').value = observations || '';
+            document.getElementById('stock-details-modal').classList.remove('hidden');
+        }
+
+        function closeStockDetailsModal() {
+            document.getElementById('stock-details-modal').classList.add('hidden');
+        }
+
+        function saveStockDetails() {
+            const mainMods = [];
+            if (document.getElementById('stock-detail-motorV8').checked) mainMods.push('motorV8');
+            if (document.getElementById('stock-detail-turboKit').checked) mainMods.push('turbo');
+            if (document.getElementById('stock-detail-brakesKit').checked) mainMods.push('frenos');
+            const performance = {};
+            ['motor', 'brakes', 'turbo', 'transmission', 'suspension', 'armor'].forEach(field => {
+                performance[field] = parseInt(document.getElementById(`stock-detail-${field}`).value) || 0;
+            });
+            const configuration = {
+                fullTuning: document.getElementById('stock-detail-full-tuning').checked,
+                traction: document.getElementById('stock-detail-traction').value,
+                mainMods,
+                wheels: document.getElementById('stock-detail-wheels').value,
+                wheelsLabel: document.getElementById('stock-detail-wheels').options[document.getElementById('stock-detail-wheels').selectedIndex]?.textContent || '',
+                performance,
+                cosmetics: parseInt(document.getElementById('stock-detail-cosmetics').value) || 0
+            };
+            const observations = document.getElementById('stock-detail-observations').value.trim();
+            if (detailEditorContext.type === 'stock') {
+                const stock = getLocalStorageData('merca_stock');
+                const item = stock[detailEditorContext.index];
+                if (item) {
+                    item.configuration = configuration;
+                    item.details = formatStockConfiguration(configuration);
+                    item.observations = observations;
+                }
+                setLocalStorageData('merca_stock', stock);
+                renderStockTable();
+            } else if (detailEditorContext.type === 'purchase') {
+                const purchases = getLocalStorageData('merca_purchases');
+                const purchase = purchases[detailEditorContext.index];
+                if (purchase) {
+                    purchase.configuration = configuration;
+                    purchase.detalles = formatStockConfiguration(configuration);
+                    purchase.observaciones = observations;
+                    document.getElementById('edit-purchase-details').value = purchase.detalles;
+                }
+                setLocalStorageData('merca_purchases', purchases);
+            } else if (detailEditorContext.type === 'sale') {
+                const sales = getLocalStorageData('merca_sales');
+                const sale = sales[detailEditorContext.index];
+                if (sale) {
+                    sale.configuration = configuration;
+                    sale.observaciones = observations;
+                    sale.details = formatStockConfiguration(configuration);
+                    document.getElementById('edit-sale-details').value = sale.details;
+                }
+                setLocalStorageData('merca_sales', sales);
+            } else if (detailEditorContext.type === 'manual-sale') {
+                manualSaleConfiguration = configuration;
+                manualSaleObservations = observations;
+                document.getElementById('manual-sale-details').value = `${formatStockConfiguration(configuration)}${observations ? ` | ${observations}` : ''}`;
+            }
+            detailEditorContext = null;
+            closeStockDetailsModal();
+        }
+
+        function openPurchaseDetailsEditor() {
+            const index = parseInt(document.getElementById('edit-purchase-index').value);
+            const purchase = getLocalStorageData('merca_purchases')[index];
+            if (!purchase) return;
+            detailEditorContext = { type: 'purchase', index };
+            openDetailsEditor(purchase.configuration, purchase.observaciones || '');
+        }
+
+        function openSaleDetailsEditor() {
+            const index = parseInt(document.getElementById('edit-sale-index').value);
+            const sale = getLocalStorageData('merca_sales')[index];
+            if (!sale) return;
+            detailEditorContext = { type: 'sale', index };
+            openDetailsEditor(sale.configuration, sale.observaciones || '');
+        }
+
+        function openManualSaleDetailsEditor() {
+            detailEditorContext = { type: 'manual-sale' };
+            openDetailsEditor(manualSaleConfiguration, manualSaleObservations);
+        }
+
+        function populateTransferVehicleOptions() {
+            const list = document.getElementById('transfer-vehicle-options');
+            if (!list) return;
+            list.innerHTML = '';
+            vehiclesData.forEach(vehicle => {
+                const option = document.createElement('option');
+                option.value = `${vehicle.marca} ${vehicle.modelo}`;
+                list.appendChild(option);
+            });
+        }
+
+        function updateTransferPrice() {
+            const vehicleText = document.getElementById('transfer-vehicle').value.trim().toLowerCase();
+            const vehicle = vehiclesData.find(item => `${item.marca} ${item.modelo}`.toLowerCase() === vehicleText);
+            if (vehicle) document.getElementById('transfer-price').value = vehicle.ventaTransf;
+        }
+
+        function addVehicleToStock() {
+            const vehicleId = parseInt(document.getElementById('stock-vehicle-select').value);
+            if (Number.isNaN(vehicleId)) return;
+            const stock = getLocalStorageData('merca_stock');
+            const existing = stock.find(item => item.id === vehicleId);
+            if (existing) existing.quantity += 1;
+            else stock.push({ id: vehicleId, quantity: 1, licensePlate: '', details: 'Añadido manualmente desde Stock', salePrice: 'POR DETERMINAR' });
+            setLocalStorageData('merca_stock', stock);
+            populateStockVehicleSelect();
+            renderStockTable();
+        }
+
+        function removeVehicleFromStock(stockIndex) {
+            const stock = getLocalStorageData('merca_stock');
+            stock.splice(stockIndex, 1);
+            setLocalStorageData('merca_stock', stock);
+            populateStockVehicleSelect();
+            renderStockTable();
+        }
+
+        async function editStockSalePrice(stockIndex) {
+            const stock = getLocalStorageData('merca_stock');
+            const item = stock[stockIndex];
+            if (!item) return;
+            const currentPrice = item.salePrice && item.salePrice !== 'POR DETERMINAR'
+                ? item.salePrice.replace(/[^0-9]/g, '')
+                : '';
+            const price = await showAppDialog({ title: 'Precio de venta', message: 'Introduce el precio de venta del vehículo.', input: true, inputValue: currentPrice, acceptText: 'Guardar' });
+            if (price === null) return;
+            const numericPrice = parseInt(price.replace(/[^0-9]/g, ''), 10);
+            item.salePrice = Number.isNaN(numericPrice) || numericPrice <= 0
+                ? 'POR DETERMINAR'
+                : `$${numericPrice.toLocaleString()}`;
+            setLocalStorageData('merca_stock', stock);
+            renderStockTable();
+        }
+
+        async function editStockItem(stockIndex) {
+            const stock = getLocalStorageData('merca_stock');
+            const item = stock[stockIndex];
+            if (!item) return;
+            const licensePlate = await showAppDialog({ title: 'Matrícula', message: 'Introduce la matrícula del vehículo.', input: true, inputValue: item.licensePlate || '', acceptText: 'Continuar' });
+            if (licensePlate === null) return;
+            const details = await showAppDialog({ title: 'Detalles', message: 'Introduce los detalles del vehículo.', input: true, inputValue: item.details || '', acceptText: 'Guardar' });
+            if (details === null) return;
+            item.licensePlate = licensePlate.trim().toUpperCase();
+            item.details = details.trim();
+            setLocalStorageData('merca_stock', stock);
+            renderStockTable();
+        }
+
+        function prepareStockSale(stockIndex) {
+            const stock = getLocalStorageData('merca_stock');
+            const item = stock[stockIndex];
+            const vehicle = item && vehiclesData.find(candidate => candidate.id === item.id);
+            if (!item || !vehicle) return;
+            document.getElementById('stock-sale-index').value = stockIndex;
+            document.getElementById('manual-sale-vehicle').value = `${vehicle.marca} ${vehicle.modelo}`;
+            document.getElementById('manual-sale-license-plate').value = item.licensePlate || '';
+            document.getElementById('manual-sale-total').value = item.salePrice && item.salePrice !== 'POR DETERMINAR'
+                ? item.salePrice.replace(/[^0-9]/g, '')
+                : '';
+            document.getElementById('manual-sale-details').value = `${item.details || 'Sin detalles'}${item.observations ? ` | ${item.observations}` : ''}`;
+            openAddSaleModal();
+        }
+
+        function openAddVehicleModal() { document.getElementById('add-vehicle-modal').classList.remove('hidden'); }
+        function closeAddVehicleModal() { document.getElementById('add-vehicle-modal').classList.add('hidden'); }
+        function saveNewVehicle(e) {
+            e.preventDefault();
+            const newV = {
+                id: vehiclesData.length ? Math.max(...vehiclesData.map(v => v.id)) + 1 : 0,
+                marca: document.getElementById('new-vehicle-marca').value.toUpperCase(),
+                modelo: document.getElementById('new-vehicle-modelo').value.toUpperCase(),
+                precioNuevo: parseInt(document.getElementById('new-vehicle-precio').value),
+                maxCompra: parseInt(document.getElementById('new-vehicle-maxcompra').value),
+                compraTransf: parseInt(document.getElementById('new-vehicle-compratransf').value),
+                ventaTransf: parseInt(document.getElementById('new-vehicle-ventatransf').value)
+            };
+            vehiclesData.push(newV);
+            closeAddVehicleModal();
+            populateVehicleDropdown();
+            renderInventoryTable();
+        }
+
+        function openEditVehicleModal(id) {
+            const v = vehiclesData.find(item => item.id === id);
+            if (!v) return;
+            document.getElementById('edit-vehicle-id').value = v.id;
+            document.getElementById('edit-vehicle-marca').value = v.marca;
+            document.getElementById('edit-vehicle-modelo').value = v.modelo;
+            document.getElementById('edit-vehicle-precio').value = v.precioNuevo;
+            document.getElementById('edit-vehicle-maxcompra').value = v.maxCompra;
+            document.getElementById('edit-vehicle-compratransf').value = v.compraTransf;
+            document.getElementById('edit-vehicle-ventatransf').value = v.ventaTransf;
+            document.getElementById('edit-vehicle-modal').classList.remove('hidden');
+        }
+        function closeEditVehicleModal() { document.getElementById('edit-vehicle-modal').classList.add('hidden'); }
+        function saveEditedVehicle(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('edit-vehicle-id').value);
+            const v = vehiclesData.find(item => item.id === id);
+            if (v) {
+                v.marca = document.getElementById('edit-vehicle-marca').value.toUpperCase();
+                v.modelo = document.getElementById('edit-vehicle-modelo').value.toUpperCase();
+                v.precioNuevo = parseInt(document.getElementById('edit-vehicle-precio').value);
+                v.maxCompra = parseInt(document.getElementById('edit-vehicle-maxcompra').value);
+                v.compraTransf = parseInt(document.getElementById('edit-vehicle-compratransf').value);
+                v.ventaTransf = parseInt(document.getElementById('edit-vehicle-ventatransf').value);
+            }
+            closeEditVehicleModal();
+            populateVehicleDropdown();
+            renderInventoryTable();
+        }
+
+        async function deleteVehicle(id) {
+            if (!await showAppDialog({ title: 'Eliminar vehículo', message: '¿Seguro que deseas eliminar este vehículo del catálogo?' })) return;
+            const idx = vehiclesData.findIndex(v => v.id === id);
+            if (idx !== -1) vehiclesData.splice(idx, 1);
+            populateVehicleDropdown();
+            renderInventoryTable();
+        }
+
+        // Historiales LocalStorage
+        function getLocalStorageData(key) {
+            try { return JSON.parse(localStorage.getItem(key)) || []; } catch(err) { return []; }
+        }
+        function setLocalStorageData(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        function parseStoredMoney(value) {
+            return parseInt(String(value || '').replace(/[^0-9]/g, ''), 10) || 0;
+        }
+
+        function formatMoney(value) {
+            return `$${value.toLocaleString()}`;
+        }
+
+        function showAppDialog({ title = 'Confirmar', message = '', input = false, inputValue = '', acceptText = 'Aceptar', cancelText = 'Cancelar' }) {
+            return new Promise(resolve => {
+                const dialog = document.getElementById('app-dialog');
+                const inputElement = document.getElementById('app-dialog-input');
+                const acceptButton = document.getElementById('app-dialog-accept');
+                const cancelButton = document.getElementById('app-dialog-cancel');
+                document.getElementById('app-dialog-title').textContent = title;
+                document.getElementById('app-dialog-message').textContent = message;
+                inputElement.value = inputValue;
+                inputElement.classList.toggle('hidden', !input);
+                acceptButton.textContent = acceptText;
+                cancelButton.textContent = cancelText;
+                dialog.classList.remove('hidden');
+                if (input) setTimeout(() => inputElement.focus(), 0);
+
+                const finish = value => {
+                    dialog.classList.add('hidden');
+                    acceptButton.onclick = null;
+                    cancelButton.onclick = null;
+                    resolve(value);
+                };
+                acceptButton.onclick = () => finish(input ? inputElement.value : true);
+                cancelButton.onclick = () => finish(input ? null : false);
+            });
+        }
+
+        function showAppMessage(message, title = 'Aviso') {
+            return showAppDialog({ title, message, cancelText: 'Cerrar' }).then(() => undefined);
+        }
+
+        function getCalculatorDetails() {
+            const details = [];
+            const traction = document.getElementById('traction-type');
+            const performanceLabels = {
+                motor: 'Motor',
+                brakes: 'Frenos cerámicos',
+                turbo: 'Turbo',
+                transmission: 'Transmisión',
+                suspension: 'Suspensión',
+                armor: 'Blindaje'
+            };
+
+            if (isFullTuning) {
+                const tractionText = traction.options[traction.selectedIndex]?.textContent || 'Sin tracción';
+                details.push(`Full Tuning${traction.value !== '0' ? ` (${tractionText})` : ''}`);
+            } else if (traction.value !== '0') {
+                details.push(traction.options[traction.selectedIndex]?.textContent || 'Tracción');
+            }
+            const wheelType = document.getElementById('wheel-type');
+            if (wheelType.value !== '0') details.push(wheelType.options[wheelType.selectedIndex]?.textContent || 'Ruedas');
+            Object.keys(selectedMainMods).forEach(key => details.push(selectedMainMods[key].name));
+            Object.keys(performanceLabels).forEach(key => {
+                const level = parseInt(document.getElementById(`performance-${key}`).value) || 0;
+                if (level > 0) details.push(`${performanceLabels[key]} nivel ${level}`);
+            });
+
+            const cosmeticCount = parseInt(document.getElementById('cosmetic-count').value) || 0;
+            if (cosmeticCount > 0) details.push(`${cosmeticCount} cosmético(s)`);
+            return details.join(', ') || 'Sin modificaciones';
+        }
+
+        function getCalculatorConfiguration() {
+            const performance = {};
+            ['motor', 'brakes', 'turbo', 'transmission', 'suspension', 'armor'].forEach(field => {
+                performance[field] = parseInt(document.getElementById(`performance-${field}`).value) || 0;
+            });
+            return {
+                fullTuning: isFullTuning,
+                traction: document.getElementById('traction-type').value,
+                wheels: document.getElementById('wheel-type').value,
+                wheelsLabel: document.getElementById('wheel-type').options[document.getElementById('wheel-type').selectedIndex]?.textContent || '',
+                mainMods: Object.keys(selectedMainMods),
+                performance,
+                cosmetics: parseInt(document.getElementById('cosmetic-count').value) || 0
+            };
+        }
+
+        function formatStockConfiguration(configuration = {}) {
+            const details = [];
+            if (configuration.fullTuning) {
+                const tractionLabels = { '6500': 'AWD / 4x4', '6000': 'RWD / Trasera', '5500': 'FWD / Delantera' };
+                details.push(`Full Tuning${configuration.traction !== '0' ? ` (${tractionLabels[configuration.traction] || 'Tracción'})` : ''}`);
+            }
+            const mainModLabels = { motorV8: 'Motor V8 Performance', turbo: 'Kit Turbo Intercooler', frenos: 'Frenos de Competición' };
+            (configuration.mainMods || []).forEach(key => details.push(mainModLabels[key] || key));
+            if (configuration.wheels && configuration.wheels !== '0') details.push(configuration.wheelsLabel || 'Ruedas (+$3.500)');
+            const performanceLabels = { motor: 'Motor', brakes: 'Frenos cerámicos', turbo: 'Turbo', transmission: 'Transmisión', suspension: 'Suspensión', armor: 'Blindaje' };
+            Object.keys(performanceLabels).forEach(key => {
+                const level = configuration.performance?.[key] || 0;
+                if (level > 0) details.push(`${performanceLabels[key]} nivel ${level}`);
+            });
+            if (configuration.cosmetics > 0) details.push(`${configuration.cosmetics} cosmético(s)`);
+            return details.join(', ') || 'Sin modificaciones';
+        }
+
+        function addPurchaseToStock(record) {
+            const stock = getLocalStorageData('merca_stock');
+            const existing = stock.find(item => item.id === record.vehicleId && item.licensePlate === record.matricula);
+            if (existing) {
+                existing.quantity += 1;
+                existing.details = record.detalles;
+                existing.configuration = record.configuration;
+                existing.observations = record.observations;
+            } else {
+                stock.push({
+                    id: record.vehicleId,
+                    quantity: 1,
+                    licensePlate: record.matricula,
+                    details: record.detalles,
+                    salePrice: 'POR DETERMINAR',
+                    configuration: record.configuration,
+                    observations: record.observations
+                });
+            }
+            setLocalStorageData('merca_stock', stock);
+        }
+
+        async function saveCurrentSaleAsSaleRecord() {
+            if (!selectedVehicle) return;
+            const client = document.getElementById('client-name').value || 'Cliente Anónimo';
+            const mechanic = document.getElementById('mechanic-name').value || 'Sin asignar';
+            const totalPrice = document.getElementById('summary-total-price').textContent;
+            const details = getCalculatorDetails();
+            const matricula = document.getElementById('calculator-license-plate').value.trim().toUpperCase();
+            if (!matricula) {
+                await showAppMessage('Introduce la matrícula antes de registrar la compra.');
+                return;
+            }
+
+            const record = {
+                fecha: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                cliente: client,
+                vehiculo: `${selectedVehicle.marca} ${selectedVehicle.modelo}`,
+                vehicleId: selectedVehicle.id,
+                matricula,
+                detalles: details,
+                configuration: getCalculatorConfiguration(),
+                observations: document.getElementById('mechanic-observations').value.trim(),
+                total: totalPrice,
+                mecanico: mechanic
+            };
+
+            const purchases = getLocalStorageData('merca_purchases');
+            purchases.unshift(record);
+            setLocalStorageData('merca_purchases', purchases);
+            addPurchaseToStock(record);
+            
+            await showAppMessage('¡Presupuesto / Compra registrado con éxito!', 'Compra registrada');
+            resetCalculator();
+        }
+
+        function renderPurchasesTable() {
+            const tbody = document.getElementById('purchases-table-body');
+            tbody.innerHTML = '';
+            const purchases = getLocalStorageData('merca_purchases');
+            
+            purchases.forEach((p, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="px-6 py-4 text-xs text-slate-400">${p.fecha}</td>
+                    <td class="px-6 py-4 font-bold text-white">${p.cliente}</td>
+                    <td class="px-6 py-4 text-cyan-400 font-medium">${p.vehiculo}</td>
+                    <td class="px-6 py-4 text-white">${p.matricula || 'Sin matrícula'}</td>
+                    <td class="px-6 py-4 text-xs text-slate-300">${p.detalles}</td>
+                    <td class="px-6 py-4 text-right font-black text-emerald-400">${p.total}</td>
+                    <td class="px-6 py-4 text-slate-300">${p.mecanico}</td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                        <button onclick="openEditPurchaseModal(${index})" class="p-2 text-cyan-400 hover:text-white transition-colors"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deletePurchase(${index})" class="p-2 text-red-400 hover:text-red-300 transition-colors"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            const purchasesTotal = purchases.reduce((total, purchase) => total + parseStoredMoney(purchase.total), 0);
+            document.getElementById('purchases-total-money').textContent = formatMoney(purchasesTotal);
+        }
+        async function deletePurchase(index) {
+            if (!await showAppDialog({ title: 'Eliminar compra', message: '¿Seguro que deseas eliminar esta compra del historial?' })) return;
+            const purchases = getLocalStorageData('merca_purchases');
+            purchases.splice(index, 1);
+            setLocalStorageData('merca_purchases', purchases);
+            renderPurchasesTable();
+        }
+        function openEditPurchaseModal(index) {
+            const purchases = getLocalStorageData('merca_purchases');
+            const p = purchases[index];
+            if (!p) return;
+            document.getElementById('edit-purchase-index').value = index;
+            document.getElementById('edit-purchase-client').value = p.cliente;
+            document.getElementById('edit-purchase-vehicle').value = p.vehiculo;
+            document.getElementById('edit-purchase-license-plate').value = p.matricula || '';
+            document.getElementById('edit-purchase-details').value = p.detalles;
+            document.getElementById('edit-purchase-total').value = parseInt(String(p.total).replace(/[^0-9]/g, '')) || 0;
+            document.getElementById('edit-purchase-mechanic').value = p.mecanico;
+            document.getElementById('edit-purchase-modal').classList.remove('hidden');
+        }
+        function closeEditPurchaseModal() { document.getElementById('edit-purchase-modal').classList.add('hidden'); }
+        function saveEditedPurchase(e) {
+            e.preventDefault();
+            const index = parseInt(document.getElementById('edit-purchase-index').value);
+            const purchases = getLocalStorageData('merca_purchases');
+            if (purchases[index]) {
+                purchases[index].cliente = document.getElementById('edit-purchase-client').value;
+                purchases[index].vehiculo = document.getElementById('edit-purchase-vehicle').value.toUpperCase();
+                purchases[index].matricula = document.getElementById('edit-purchase-license-plate').value.toUpperCase();
+                purchases[index].detalles = document.getElementById('edit-purchase-details').value;
+                purchases[index].total = `$${parseInt(document.getElementById('edit-purchase-total').value).toLocaleString()}`;
+                purchases[index].mecanico = document.getElementById('edit-purchase-mechanic').value;
+                setLocalStorageData('merca_purchases', purchases);
+            }
+            closeEditPurchaseModal();
+            renderPurchasesTable();
+        }
+
+        // Ventas Manuales
+        function openAddSaleModal() { document.getElementById('add-sale-modal').classList.remove('hidden'); }
+        function closeAddSaleModal() { document.getElementById('add-sale-modal').classList.add('hidden'); }
+        function saveManualSale(e) {
+            e.preventDefault();
+            const record = {
+                fecha: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                cliente: document.getElementById('manual-sale-client').value,
+                vehiculo: document.getElementById('manual-sale-vehicle').value.toUpperCase(),
+                matricula: document.getElementById('manual-sale-license-plate').value.toUpperCase(),
+                observaciones: document.getElementById('manual-sale-details').value || 'Ninguna',
+                configuration: manualSaleConfiguration,
+                details: formatStockConfiguration(manualSaleConfiguration),
+                total: `$${parseInt(document.getElementById('manual-sale-total').value).toLocaleString()}`,
+                mecanico: document.getElementById('manual-sale-mechanic').value
+            };
+            const sales = getLocalStorageData('merca_sales');
+            sales.unshift(record);
+            setLocalStorageData('merca_sales', sales);
+            const stockSaleIndex = document.getElementById('stock-sale-index').value;
+            if (stockSaleIndex !== '') {
+                const stock = getLocalStorageData('merca_stock');
+                const stockItem = stock[parseInt(stockSaleIndex)];
+                if (stockItem) {
+                    record.configuration = stockItem.configuration || {};
+                    record.observaciones = stockItem.observations || record.observaciones;
+                    record.details = stockItem.details || record.observaciones;
+                    stockItem.quantity -= 1;
+                    if (stockItem.quantity <= 0) stock.splice(parseInt(stockSaleIndex), 1);
+                    setLocalStorageData('merca_stock', stock);
+                }
+            }
+            document.getElementById('stock-sale-index').value = '';
+            closeAddSaleModal();
+            populateStockVehicleSelect();
+            renderStockTable();
+            renderSalesTable();
+        }
+
+        function renderSalesTable() {
+            const tbody = document.getElementById('sales-table-body');
+            tbody.innerHTML = '';
+            const sales = getLocalStorageData('merca_sales');
+            document.getElementById('sales-total-count').textContent = sales.length;
+
+            sales.forEach((s, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="px-6 py-4 text-xs text-slate-400">${s.fecha}</td>
+                    <td class="px-6 py-4 font-bold text-white">${s.cliente}</td>
+                    <td class="px-6 py-4 text-cyan-400 font-medium">${s.vehiculo}</td>
+                    <td class="px-6 py-4 text-white">${s.matricula || 'Sin matrícula'}</td>
+                    <td class="px-6 py-4 text-xs text-slate-300">${s.observaciones}</td>
+                    <td class="px-6 py-4 text-right font-black text-emerald-400">${s.total}</td>
+                    <td class="px-6 py-4 text-slate-300">${s.mecanico}</td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
+                        <button onclick="openEditSaleModal(${index})" class="p-2 text-cyan-400 hover:text-white transition-colors"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteSale(${index})" class="p-2 text-red-400 hover:text-red-300 transition-colors"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            const salesTotal = sales.reduce((total, sale) => total + parseStoredMoney(sale.total), 0);
+            document.getElementById('sales-total-money').textContent = formatMoney(salesTotal);
+        }
+        async function deleteSale(index) {
+            if (!await showAppDialog({ title: 'Eliminar venta', message: '¿Seguro que deseas eliminar esta venta del historial?' })) return;
+            const sales = getLocalStorageData('merca_sales');
+            sales.splice(index, 1);
+            setLocalStorageData('merca_sales', sales);
+            renderSalesTable();
+        }
+        function openEditSaleModal(index) {
+            const sales = getLocalStorageData('merca_sales');
+            const s = sales[index];
+            if (!s) return;
+            document.getElementById('edit-sale-index').value = index;
+            document.getElementById('edit-sale-client').value = s.cliente;
+            document.getElementById('edit-sale-vehicle').value = s.vehiculo;
+            document.getElementById('edit-sale-license-plate').value = s.matricula || '';
+            document.getElementById('edit-sale-details').value = s.observaciones;
+            document.getElementById('edit-sale-total').value = parseInt(String(s.total).replace(/[^0-9]/g, '')) || 0;
+            document.getElementById('edit-sale-mechanic').value = s.mecanico;
+            document.getElementById('edit-sale-modal').classList.remove('hidden');
+        }
+        function closeEditSaleModal() { document.getElementById('edit-sale-modal').classList.add('hidden'); }
+        function saveEditedSale(e) {
+            e.preventDefault();
+            const index = parseInt(document.getElementById('edit-sale-index').value);
+            const sales = getLocalStorageData('merca_sales');
+            if (sales[index]) {
+                sales[index].cliente = document.getElementById('edit-sale-client').value;
+                sales[index].vehiculo = document.getElementById('edit-sale-vehicle').value.toUpperCase();
+                sales[index].matricula = document.getElementById('edit-sale-license-plate').value.toUpperCase();
+                sales[index].observaciones = document.getElementById('edit-sale-details').value || 'Ninguna';
+                sales[index].total = `$${parseInt(document.getElementById('edit-sale-total').value).toLocaleString()}`;
+                sales[index].mecanico = document.getElementById('edit-sale-mechanic').value;
+                setLocalStorageData('merca_sales', sales);
+            }
+            closeEditSaleModal();
+            renderSalesTable();
+        }
+
+        // Traspasos
+        function toggleTransferForm() {
+            const container = document.getElementById('transfer-form-container');
+            const icon = document.getElementById('transfer-form-icon');
+            const text = document.getElementById('transfer-form-btn-text');
+            container.classList.toggle('hidden');
+            if (!container.classList.contains('hidden')) {
+                icon.className = 'fa-solid fa-minus';
+                text.textContent = 'Ocultar Formulario';
+            } else {
+                icon.className = 'fa-solid fa-plus';
+                text.textContent = 'Nuevo Traspaso';
+            }
+        }
+
+        async function saveTransferRecord(e) {
+            e.preventDefault();
+            const vehicleText = document.getElementById('transfer-vehicle').value.trim().toLowerCase();
+            const selectedTransferVehicle = vehiclesData.find(item => `${item.marca} ${item.modelo}`.toLowerCase() === vehicleText);
+            if (!selectedTransferVehicle) {
+                await showAppMessage('Selecciona un vehículo válido del catálogo.');
+                return;
+            }
+            const record = {
+                fecha: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                comprador: document.getElementById('transfer-buyer').value,
+                vendedor: document.getElementById('transfer-seller').value,
+                vehicleId: selectedTransferVehicle.id,
+                vehiculo: `${selectedTransferVehicle.marca} ${selectedTransferVehicle.modelo}`,
+                precio: `$${selectedTransferVehicle.ventaTransf.toLocaleString()}`,
+            };
+            const transfers = getLocalStorageData('merca_transfers');
+            transfers.unshift(record);
+            setLocalStorageData('merca_transfers', transfers);
+            document.getElementById('transfer-form').reset();
+            toggleTransferForm();
+            renderTransfersTable();
+        }
+
+        function renderTransfersTable() {
+            const tbody = document.getElementById('transfers-table-body');
+            tbody.innerHTML = '';
+            const transfers = getLocalStorageData('merca_transfers');
+            document.getElementById('transfers-total-count').textContent = transfers.length;
+
+            transfers.forEach((t, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="px-6 py-4 text-xs text-slate-400">${t.fecha}</td>
+                    <td class="px-6 py-4 text-slate-300">${t.vendedor}</td>
+                    <td class="px-6 py-4 text-cyan-400 font-medium">${t.vehiculo}</td>
+                    <td class="px-6 py-4 text-right font-black text-emerald-400">${t.precio}</td>
+                    <td class="px-6 py-4 text-center">
+                        <button onclick="deleteTransfer(${index})" class="p-2 text-red-400 hover:text-red-300 transition-colors"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            const transfersTotal = transfers.reduce((total, transfer) => total + parseStoredMoney(transfer.precio), 0);
+            document.getElementById('transfers-total-money').textContent = formatMoney(transfersTotal);
+        }
+        async function deleteTransfer(index) {
+            if (!await showAppDialog({ title: 'Eliminar traspaso', message: '¿Seguro que deseas eliminar este traspaso del historial?' })) return;
+            const transfers = getLocalStorageData('merca_transfers');
+            transfers.splice(index, 1);
+            setLocalStorageData('merca_transfers', transfers);
+            renderTransfersTable();
+        }
+
+        // Inicialización al cargar la página
+        window.onload = function() {
+            populateVehicleDropdown();
+            populateTransferVehicleOptions();
+        };
+    </script>
+</body>
+</html>
